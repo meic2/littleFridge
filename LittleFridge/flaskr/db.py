@@ -21,19 +21,20 @@ extendedIngredients: list, (named from spoonAPI)
 }
 """
 from flask import abort
+
 if __package__:
     from .extensions import mongo
 else:
     from extensions import mongo
-
 
 database = mongo.get_database('Fridge')
 STATUS_NORMAL = 200
 STATUS_NOTFOUND = 404
 STATUS_UNKNOWN = 500
 STATUS_BAD_REQUEST = 400
-UPDATE_NORMAL_MESSAGE = "The file is successfully changed accordingly.}"
+UPDATE_NORMAL_MESSAGE = "The file is successfully changed accordingly."
 NOT_FOUND_MESSAGE = "No such grocery/recipe exist!"
+
 
 def get_db(collection_name, food_id):
     """
@@ -72,7 +73,7 @@ def delete_db(collection_name, food_id):
     collection = database[collection_name]
     identifier = collection_name + "_id"
     deleted = collection.delete_many({identifier: food_id})
-    return deleted.deleted_count
+    return str(deleted.deleted_count) + " number of instances have been deleted"
 
 
 def post_db(collection_name, food_id, params):
@@ -102,8 +103,6 @@ def close_db(e=None):
     '''
     return mongo.close()
 
-def
+
 if __name__ == "__main__":
-
-
-    # print(get_db("grocery", 123))
+    print(get_db("grocery", 123))

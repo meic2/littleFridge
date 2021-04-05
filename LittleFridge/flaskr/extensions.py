@@ -1,4 +1,5 @@
-from flask_pymongo import pymongo
+import pymongo
+
 if __package__:
     from .config import MONGO_URI
 else:

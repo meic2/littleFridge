@@ -36,8 +36,8 @@ def update_grocery(grocery_id, body):
     """
     assert type(body) is dict
     # check whether the body self defines _id and remove extra _id
-    if body["_id"] is not None:
-        del body["_id"]
+    # if body["_id"] is not None:
+    #     del body["_id"]
     return db.post_db("grocery", grocery_id, body)
 
 
@@ -46,5 +46,17 @@ def delete_grocery(grocery_id):
 
 
 def insert_grocery(instance):
+    if not check_required_field(instance):
+        abort(db.STATUS_BAD_REQUEST, "NOT REQUIRED FIELD")
     return db.put_db("grocery", instance)
+
+
+def check_required_field(instance):
+    if "grocery_id" not in instance:
+        return False
+    if "deadline" not in instance:
+        return False
+    if "grocery_name" not in instance:
+        return False
+    return True
 # TODO: check if body has required field

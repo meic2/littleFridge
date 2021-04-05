@@ -10,6 +10,7 @@ STATUS_NORMAL = 200
 JSON_HEADER = {"Content-Type": "application/json"}
 CLASSIFY_GROCERY_URL = "https://api.spoonacular.com/food/products/classify"
 SEARCH_GROCERY_URL = "https://api.spoonacular.com/food/products/search"
+RECIPE_FIND_BY_INGRE = "https://api.spoonacular.com/recipes/findByIngredients"
 
 
 def search_grocery_by_name(usr_input, number=5):
@@ -67,7 +68,7 @@ def transit_spoon_ingredients(extendedIngredients):
     return converted_dict[0]
 
 
-def classify_grocery_by_name(name, upc = "", plu_code = ""):
+def classify_grocery_by_name(name, upc="", plu_code=""):
     """
     user's input name wiill return back a suggested category
     :param name: user input
@@ -90,340 +91,39 @@ def classify_grocery_by_name(name, upc = "", plu_code = ""):
     return response.json()["matched"]
 
 
-def search_recipe(query, number = 5):
+def construct_query_find_by_ingre(ingre_list):
+    """
+    construct the query from a list of ingredients
+    :param ingre_list:
+    :return:
+    """
+    query = ''
+    for ingre in ingre_list:
+        query += ingre
+        query += ",+"
+    query = query[:-2]
+    return query
 
+
+def search_recipe_by_ingre(ingre_list, number=5):
+    """
+    search the matching recipes with the ingredients that needs to be consumed
+    :param ingre_list: a list of ingredient name
+    :param number: default to be 5
+    :return: a list (length = number) of recipe
+    """
+    parameters = {
+        "apiKey": SPOON_KEY,
+        "ingredients": construct_query_find_by_ingre(ingre_list),
+        "ranking": 1,  # maximize the ingredients
+        "number": number
+    }
+    response = requests.get(url=RECIPE_FIND_BY_INGRE, params=parameters)
+    if response.status_code != STATUS_NORMAL:
+        return "no suggested classification"
+    return response.json()
 
 
 if __name__ == "__main__":
-    print(classify_grocery_by_name("pineapple"))
-    # temp_arr = [{
-    #         "id": 20081,
-    #         "aisle": "Baking",
-    #         "image": "flour.png",
-    #         "consistency": "solid",
-    #         "name": "flour",
-    #         "nameClean": "wheat flour",
-    #         "original": "2 tablespoons Flour",
-    #         "originalString": "2 tablespoons Flour",
-    #         "originalName": "Flour",
-    #         "amount": 2.0,
-    #         "unit": "tablespoons",
-    #         "meta": [],
-    #         "metaInformation": [],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             },
-    #             "metric": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 11291,
-    #         "aisle": "Produce",
-    #         "image": "spring-onions.jpg",
-    #         "consistency": "solid",
-    #         "name": "green onions",
-    #         "nameClean": "spring onions",
-    #         "original": "cup Green Onions, chopped",
-    #         "originalString": "cup Green Onions, chopped",
-    #         "originalName": "Green Onions, chopped",
-    #         "amount": 1.0,
-    #         "unit": "cup",
-    #         "meta": [
-    #             "chopped"
-    #         ],
-    #         "metaInformation": [
-    #             "chopped"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 1.0,
-    #                 "unitShort": "cup",
-    #                 "unitLong": "cup"
-    #             },
-    #             "metric": {
-    #                 "amount": 236.588,
-    #                 "unitShort": "ml",
-    #                 "unitLong": "milliliters"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 1085,
-    #         "aisle": "Milk, Eggs, Other Dairy",
-    #         "image": "milk.jpg",
-    #         "consistency": "liquid",
-    #         "name": "non-fat milk",
-    #         "nameClean": "fat free milk",
-    #         "original": "1 1/4 cups Non-Fat Milk",
-    #         "originalString": "1 1/4 cups Non-Fat Milk",
-    #         "originalName": "Non-Fat Milk",
-    #         "amount": 1.25,
-    #         "unit": "cups",
-    #         "meta": [],
-    #         "metaInformation": [],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 1.25,
-    #                 "unitShort": "cups",
-    #                 "unitLong": "cups"
-    #             },
-    #             "metric": {
-    #                 "amount": 295.735,
-    #                 "unitShort": "ml",
-    #                 "unitLong": "milliliters"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 4053,
-    #         "aisle": "Oil, Vinegar, Salad Dressing",
-    #         "image": "olive-oil.jpg",
-    #         "consistency": "liquid",
-    #         "name": "olive oil",
-    #         "nameClean": "olive oil",
-    #         "original": "2 tablespoons Olive Oil",
-    #         "originalString": "2 tablespoons Olive Oil",
-    #         "originalName": "Olive Oil",
-    #         "amount": 2.0,
-    #         "unit": "tablespoons",
-    #         "meta": [],
-    #         "metaInformation": [],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             },
-    #             "metric": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 11282,
-    #         "aisle": "Produce",
-    #         "image": "brown-onion.png",
-    #         "consistency": "solid",
-    #         "name": "onion",
-    #         "nameClean": "onion",
-    #         "original": "2 tablespoons Onion, minced",
-    #         "originalString": "2 tablespoons Onion, minced",
-    #         "originalName": "Onion, minced",
-    #         "amount": 2.0,
-    #         "unit": "tablespoons",
-    #         "meta": [
-    #             "minced"
-    #         ],
-    #         "metaInformation": [
-    #             "minced"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             },
-    #             "metric": {
-    #                 "amount": 2.0,
-    #                 "unitShort": "Tbsps",
-    #                 "unitLong": "Tbsps"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 1033,
-    #         "aisle": "Cheese",
-    #         "image": "parmesan.jpg",
-    #         "consistency": "solid",
-    #         "name": "parmesan cheese",
-    #         "nameClean": "parmesan",
-    #         "original": "1/4 cup Parmesan Cheese, grated",
-    #         "originalString": "1/4 cup Parmesan Cheese, grated",
-    #         "originalName": "Parmesan Cheese, grated",
-    #         "amount": 0.25,
-    #         "unit": "cup",
-    #         "meta": [
-    #             "grated"
-    #         ],
-    #         "metaInformation": [
-    #             "grated"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 0.25,
-    #                 "unitShort": "cups",
-    #                 "unitLong": "cups"
-    #             },
-    #             "metric": {
-    #                 "amount": 59.147,
-    #                 "unitShort": "ml",
-    #                 "unitLong": "milliliters"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 11297,
-    #         "aisle": "Produce;Spices and Seasonings",
-    #         "image": "parsley.jpg",
-    #         "consistency": "solid",
-    #         "name": "parsley",
-    #         "nameClean": "parsley",
-    #         "original": "cup Fresh Parsley or Basil, chopped",
-    #         "originalString": "cup Fresh Parsley or Basil, chopped",
-    #         "originalName": "Fresh Parsley or Basil, chopped",
-    #         "amount": 1.0,
-    #         "unit": "cup",
-    #         "meta": [
-    #             "fresh",
-    #             "chopped"
-    #         ],
-    #         "metaInformation": [
-    #             "fresh",
-    #             "chopped"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 1.0,
-    #                 "unitShort": "cup",
-    #                 "unitLong": "cup"
-    #             },
-    #             "metric": {
-    #                 "amount": 236.588,
-    #                 "unitShort": "ml",
-    #                 "unitLong": "milliliters"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 20420,
-    #         "aisle": "Pasta and Rice",
-    #         "image": "fusilli.jpg",
-    #         "consistency": "solid",
-    #         "name": "pasta",
-    #         "nameClean": "pasta",
-    #         "original": "8 ounces Tubular Pasta",
-    #         "originalString": "8 ounces Tubular Pasta",
-    #         "originalName": "Tubular Pasta",
-    #         "amount": 8.0,
-    #         "unit": "ounces",
-    #         "meta": [],
-    #         "metaInformation": [],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 8.0,
-    #                 "unitShort": "oz",
-    #                 "unitLong": "ounces"
-    #             },
-    #             "metric": {
-    #                 "amount": 226.796,
-    #                 "unitShort": "g",
-    #                 "unitLong": "grams"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 11304,
-    #         "aisle": "Produce",
-    #         "image": "peas.jpg",
-    #         "consistency": "solid",
-    #         "name": "peas",
-    #         "nameClean": "green peas",
-    #         "original": "1 cup Frozen Peas, thawed",
-    #         "originalString": "1 cup Frozen Peas, thawed",
-    #         "originalName": "Frozen Peas, thawed",
-    #         "amount": 1.0,
-    #         "unit": "cup",
-    #         "meta": [
-    #             "frozen",
-    #             "thawed"
-    #         ],
-    #         "metaInformation": [
-    #             "frozen",
-    #             "thawed"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 1.0,
-    #                 "unitShort": "cup",
-    #                 "unitLong": "cup"
-    #             },
-    #             "metric": {
-    #                 "amount": 236.588,
-    #                 "unitShort": "ml",
-    #                 "unitLong": "milliliters"
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 6168,
-    #         "aisle": "Condiments",
-    #         "image": "hot-sauce-or-tabasco.png",
-    #         "consistency": "liquid",
-    #         "name": "pepper sauce",
-    #         "nameClean": "hot sauce",
-    #         "original": "1 dsh Hot Pepper Sauce",
-    #         "originalString": "1 dsh Hot Pepper Sauce",
-    #         "originalName": "dsh Hot Pepper Sauce",
-    #         "amount": 1.0,
-    #         "unit": "",
-    #         "meta": [
-    #             "hot"
-    #         ],
-    #         "metaInformation": [
-    #             "hot"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 1.0,
-    #                 "unitShort": "",
-    #                 "unitLong": ""
-    #             },
-    #             "metric": {
-    #                 "amount": 1.0,
-    #                 "unitShort": "",
-    #                 "unitLong": ""
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "id": 15121,
-    #         "aisle": "Canned and Jarred",
-    #         "image": "canned-tuna.png",
-    #         "consistency": "solid",
-    #         "name": "water-packed tuna",
-    #         "nameClean": "tuna packed in water",
-    #         "original": "6 1/2 ounces Can Water-Packed Tuna, drained",
-    #         "originalString": "6 1/2 ounces Can Water-Packed Tuna, drained",
-    #         "originalName": "Water-Packed Tuna, drained",
-    #         "amount": 6.5,
-    #         "unit": "ounces",
-    #         "meta": [
-    #             "drained"
-    #         ],
-    #         "metaInformation": [
-    #             "drained"
-    #         ],
-    #         "measures": {
-    #             "us": {
-    #                 "amount": 6.5,
-    #                 "unitShort": "oz",
-    #                 "unitLong": "ounces"
-    #             },
-    #             "metric": {
-    #                 "amount": 184.272,
-    #                 "unitShort": "g",
-    #                 "unitLong": "grams"
-    #             }
-    #         }
-    #     }]
-    # json_temp = json.dumps(temp_arr)
-    # print(transit_spoon_ingredients(json_temp))
+    print(search_recipe_by_ingre(["pineApple", "flour"]))
+
