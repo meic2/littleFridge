@@ -1,6 +1,9 @@
+"""
+This file contains the route information for grocery.
+"""
 from flask import (Blueprint, request, abort)
 from . import db
-import json
+
 
 grocery = Blueprint('grocery', __name__, url_prefix='/grocery')
 

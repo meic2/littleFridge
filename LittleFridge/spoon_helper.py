@@ -1,10 +1,16 @@
-if __package__:
-    from .config import SPOON_KEY
-else:
-    from config import SPOON_KEY
+"""
+This file is a hleper that will be lated used in the React Native FrontEnd.
+When the user entering a name for the grocery/recipe, the app will automatically run on searching the name.
+If the user confirms that this is the case, the engine will use the id to search for the complete information
+and return to the front end.
+"""
+import os
 import requests
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
+SPOON_KEY = os.getenv("SPOON_APIKEY")
 AUTO_COMPLETE_GROCERY = 'https://api.spoonacular.com/food/products/suggest'
 STATUS_NORMAL = 200
 JSON_HEADER = {"Content-Type": "application/json"}
@@ -53,14 +59,14 @@ def autocomplete_search_grocery(usr_input, number=5):
         return response.status_code, response.json()['message']
 
 
-def transit_spoon_ingredients(extendedIngredients):
+def transit_spoon_ingredients(extended_ingredients):
     """
     This method transform the ingredients in the searched recipes' into correct formats
     # TODO: need to further varify the relationship between ingredients, groceries, recipes
-    :param extendedIngredients:
+    :param extended_ingredients:
     :return:
     """
-    converted_dict = json.loads(extendedIngredients)
+    converted_dict = json.loads(extended_ingredients)
     for ing in converted_dict:
         # make sure every id is transformed to spoon_id format
         ing["spoon_id"] = ing["id"]

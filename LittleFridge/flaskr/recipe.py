@@ -1,3 +1,6 @@
+"""
+This file contains the route information for recipe.
+"""
 from flask import (Blueprint, request, abort)
 from . import db
 
