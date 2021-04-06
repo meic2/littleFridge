@@ -12,7 +12,7 @@ This is the project for implementing a digital recorder for the refrigerator to 
     
 ## API
 we use Flask to set up our API, and the user will have two collection: 
-`recipe` and `grocery`
+`recipe` and `grocery`.
 
 
 ### GET
