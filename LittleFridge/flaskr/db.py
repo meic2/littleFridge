@@ -38,10 +38,10 @@ NOT_FOUND_MESSAGE = "No such grocery/recipe exist!"
 
 def get_db(collection_name, food_id):
     """
-
-    :param collection_name:
-    :param food_id:
-    :return:
+    getter of the CRUD operation
+    :param collection_name: grocery or recipe
+    :param food_id: identifier
+    :return: abnormal response or the overall instance get
     """
     assert collection_name in ["grocery", "recipe"]
     collection = database[collection_name]
@@ -55,9 +55,9 @@ def get_db(collection_name, food_id):
 def put_db(collection_name, instance):
     """
     create/insert new instance into the corresponding collection
-    :param collection_name:
-    :param instance
-    :return:
+    :param collection_name: grocery or recipe
+    :param instance: the whole instance being updated
+    :return: message saying whether it is normal
     """
     assert collection_name in ["grocery", "recipe"]
     collection = database[collection_name]
@@ -69,6 +69,12 @@ def put_db(collection_name, instance):
 
 
 def delete_db(collection_name, food_id):
+    """
+    delete one instance of the database
+    :param collection_name: grocery or recipe
+    :param food_id: identifier
+    :return: message saying whether it is normal
+    """
     assert collection_name in ["grocery", "recipe"]
     collection = database[collection_name]
     identifier = collection_name + "_id"
@@ -80,9 +86,9 @@ def post_db(collection_name, food_id, params):
     '''
     single instance being updated
     :param collection_name:
-    :param food_id:
-    :param params:
-    :return:
+    :param food_id: id of the identifier
+    :param params: the content that need to be updated
+    :return: a message saying whether it is normal
     '''
     assert collection_name in ["grocery", "recipe"]
     collection = database[collection_name]
@@ -97,10 +103,10 @@ def post_db(collection_name, food_id, params):
 
 
 def close_db(e=None):
-    '''
+    """
     connect to the database
     :return: the database and the client
-    '''
+    """
     return mongo.close()
 
 
