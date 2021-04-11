@@ -107,8 +107,7 @@ def construct_query_find_by_ingre(ingre_list):
     for ingre in ingre_list:
         query += ingre
         query += ",+"
-    query = query[:-2]
-    return query
+    return query[:-2]
 
 
 def search_recipe_by_ingre(ingre_list, number=5):
@@ -131,5 +130,5 @@ def search_recipe_by_ingre(ingre_list, number=5):
 
 
 if __name__ == "__main__":
-    print(search_recipe_by_ingre(["pineApple", "flour"]))
+    print(search_grocery_by_name(["apple"]))
 

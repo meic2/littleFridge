@@ -9,6 +9,7 @@ This is the project for implementing a digital recorder for the refrigerator to 
   
 * spoontacular API
   * for fetching the corresponding API
+  * we call on searchGrocery, searchRecipe and searchAutoComplete to help standardize our database.  
     
 ## API
 we use Flask to set up our API, and the user will have two collection: 
@@ -38,5 +39,5 @@ we use Flask to set up our API, and the user will have two collection:
 
 ## test:
 at LittleFridge directory, `export PYTHONPATH = .` and then run pytest
-
+ESlint: run `npx eslint . --ext .js,.jsx,.ts,.tsx`
 

@@ -75,10 +75,9 @@ def check_required_field(instance):
     :param instance: instace to be checked
     :return: boolean
     """
-    if "grocery_id" not in instance:
-        return False
-    if "deadline" not in instance:
-        return False
-    if "grocery_name" not in instance:
-        return False
+    checklist = ["_id", "expiration", "title"]
+    for check_item in checklist:
+        if check_item not in instance:
+            return False
+
     return True

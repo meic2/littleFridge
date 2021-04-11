@@ -73,7 +73,7 @@ def check_required_field_recipe(instance):
     :param instance: instace to be checked
     :return: boolean
     """
-    if "recipe_id" not in instance:
+    if "_id" not in instance:
         return False
     if "recipe_name" not in instance:
         return False
