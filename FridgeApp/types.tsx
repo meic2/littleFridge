@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
+  BarCodeScanner: undefined;
 };
 
 export type BottomTabParamList = {
@@ -29,10 +30,10 @@ export type SpoonGrocery = {
   "imageType": string | null,
   "ingredientCount": null | string,
   "ingredientList": string,
-  "ingredients": spoonIngredient[],
+  "ingredients": SpoonIngredient[],
   "likes"?: number,
   "nutrition": {
-    "nutrients": spoonNutrients[],
+    "nutrients": SpoonNutrients[],
     "caloricBreakdown": {
       "percentProtein": number,
       "percentFat": number,
@@ -48,15 +49,28 @@ export type SpoonGrocery = {
   spoonacularScore?: number,
 }
 
-export type spoonIngredient = {
+export type SpoonIngredient = {
   description: string | null,
   name: string | null,
   safety_level: null | string
 }
 
-export type spoonNutrients = {
+export type SpoonNutrients = {
   "name": string,
   "amount": number,
   "unit": string,
   "percentOfDailyNeeds": number
 }
+
+export type SpoonFailure = {
+  status: string,
+  message: string
+}
+
+export type SpoonRecipe = {
+
+}
+
+// export interface ScannerProps {
+//
+// }

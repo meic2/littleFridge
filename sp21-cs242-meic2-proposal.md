@@ -63,13 +63,13 @@ Week 4:
 |  set up the MongoDB database |  2  |  0: Didn't implement anything <br> 1: +1 pt: System can write from a database without errors  <br> 2: System connected to a database and can read from a database without errors  |
 |  Flask Server |  3  |  0: Didn't implement anything <br> 1: implemented a fetch towards the corresponding API  <br> 2: set up the meal database with the specific type required by the API (standardize the database) <br> 3: set up the ingredient database with the specific type required by the API (standardize the database) |
 |  API |  6  |  0: Didn't implement anything <br> 2: implemented  GET for each database <br> 4: implemented UPDATE  for each database <br> 5: implemented POST  for each database <br> 6: implemented DELETE  for each database <br> -0.5 pt for each wrong return types (200, 400, 415, 404) for each route <br> -0.5 pt for not reporting errors for each route |
-|  Query |  4  |  0: Didn't implement anything <br> 1: implemented filtering based on ranking <br> 3: implemented filtering on priority/hottest/healthiest meal 
+|  externalAPI |  4  |  0: Didn't implement anything <br> 2: implement a basic get from the API <br> 4. implement multiple filters/get from the external API 
 | unit test |  10  |  0: Didn't implement tests <br> 1: for every 2 unit tests, gain 1 point|
 
 ### Week 2
 | Category  | Total Score Allocated | Detailed Rubrics                                                            |
 |-----------|:---------:|-------------------------------------------------------------------------------|
-|  Viewer layer   |  7  |  0: Didn't implement anything <br> 2:  Log-In view are implemented <br> 2: Fridge view are implemented <br> 3: Navigation between screens <br> 4. Clean separation between model and view <br> 5. Loading views for both Log-In profile view and Fridge view <br> 6. ingredient pages is implemnted 8. navigate to the ingredient page from the fridge page <br> 9. loading to the ingredient page dynamically |
+|  Viewer layer   |  7  |  0: Didn't implement anything <br> 2:  Barcode view are implemented <br> 2: Fridge view are implemented <br> 3: Navigation between screens <br> 4. Clean separation between model and view <br> 5. Loading views for both barcode profile view and Fridge view <br>  |
 |  Model layer |  3  |  -3 pts if JSON object used directly as a model <br> -1 pt if no clean separation of parsing request into the data class <br> -1 pt if no handling of errors |
 |  layout design  |  3  |  +1 pt: Elements resize with viewport changes and without horizontal overflow<br> +1 pt: Accommodate for specified screen sizes |
 |  Manual test plan |  5  |  0 pt: No manual tests; <br> for every 2 manual test, gain 1 point |
@@ -77,13 +77,13 @@ Week 4:
 
 
 ### Week 3
-| Category  | Total Score Allocated | Detailed Rubrics                                                            |
+| Category  | Total Score Allocated | Detailed Rubrics           `                                                 |
 |-----------|:---------:|-------------------------------------------------------------------------------|
-|  Layout Design |  1 |  Complete the design for follower/following screens |
+|  Layout Design |  1 |  Complete the design for each screens |
 |   meal memo page |  4  |  0: Didn't implement anything <br> 2: implemented meal memo page <br> 4: completed functionailty of updating the database |
 |  individual meal page |  4 |  0: Didn't implement anything <br>2: implemented  individual meal page <br> 4: completed functionailty of updating the database |
 |  navigate between screens |  3  |  +1 pt: able to navigate between screens  <br> +2 pt: able to go back to the previous page by pressing the back button (in individual meal page)  <br> +2 pt: Navigation from individual meal page / meal memo page |
-| ESLint | 2 | -2 pts if eslint is not properly set up or there is error reported <br> -1 pt if there is warning reported |
+| individual ingredient page | 2 |0: Didn't implement anything <br>2: implemented  individual ingredient page <br> 4: completed functionailty of updating the database|
 |  Manual test plan |  5  |  0 pt: No manual tests; <br> for every 2 manual test, gain 1 point |
 |  snapshot test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
 

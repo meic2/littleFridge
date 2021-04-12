@@ -8,5 +8,17 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "./folder/**/*.spec.ts",
+    "./folder/someSubFolder"
+  ],
+  "include": [
+    "./folder",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
+
+
