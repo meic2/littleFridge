@@ -85,7 +85,7 @@ Week 4:
 |  navigate between screens |  3  |  +1 pt: able to navigate between screens  <br> +2 pt: able to go back to the previous page by pressing the back button (in individual meal page)  <br> +2 pt: Navigation from individual meal page / meal memo page |
 | individual ingredient page | 2 |0: Didn't implement anything <br>2: implemented  individual ingredient page <br> 4: completed functionailty of updating the database|
 |  Manual test plan |  5  |  0 pt: No manual tests; <br> for every 2 manual test, gain 1 point |
-|  snapshot test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
+|  unit test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
 
 
 ### Week 4

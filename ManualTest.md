@@ -39,7 +39,8 @@ There are two parts of the project:
            |__ views
               |__ FridgeView.tsx
            |__ navigation       
-        
+           |__ __test__
+           
         |__ LittleFridge
            |__ flaskr
                |__ __init__.py
@@ -69,12 +70,15 @@ To set up the phone, use `Expo Go` app to simulate this app in a real phone scen
 After registering, use usb to connect phone with laptop and make sure it is trusted.
 
 In your iphone, go to `Setting > Safari > Advanced`
+
 ![alt text](manualTest_ref/phone_Safari_Setting.png "")
 
 Click on Web_Inspector icon.
+
 ![alt text](manualTest_ref/phone_Safari_Develop.png "")
 
 Now go to the mac Safari, you should be able to see Develop tab right now. Click on it and navigate to the following choices, and click on `Connect via Network`.
+
 ![alt text](manualTest_ref/mac_develop_connect.png "")
 
 Then go to the terminal, run
@@ -83,6 +87,7 @@ Then go to the terminal, run
 
 There should be several messages print out, select the last IP address shown up like this:
 (this current address should be 169.254.255.255)
+
 ![alt text](manualTest_ref/ifconfig.png "")
 
 Change the variable `PHONE_IP_ADDRESS` in`FridgeModel/FridgeModel/env.ts` with this address. 
