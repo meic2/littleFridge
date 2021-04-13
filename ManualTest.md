@@ -14,6 +14,8 @@ This project was built on:
 - MongoDB Atlas
 - npm (newest version by 2021.04)
 - pytest
+- Spoonacular API (free external API, need to request for a key)
+- jest
 - optional: IOS iphone (11)
 - optional: IDE (preferrly Pycharm, VS code, Webstorm)
 
@@ -103,7 +105,12 @@ to test the pytests in the `LittleFridge` (with virtual environment open)
     
     cd LittleFridge
     pytest pytests/test_flaskr.py
-      
+
+to test typescript's utility function, run jest
+
+    cd FridgeApp
+    npx jest
+         
 ## Structure of the App
 The overall logic of the App:
 

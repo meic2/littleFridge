@@ -12,12 +12,13 @@ const JSON_HEADER = {
 
 
 export function groceryParser(response: SpoonGrocery, upcInput:string, userName:string):SpoonGrocery {
-    delete response.spoonacularScore;
+    //TODO: Hardcode the expiration, need to change here and unittest
     response._id = upcInput;
     response.spoon_id = response.id;
     response.expiration="N/A";
+    if(response.spoonacularScore)
+        delete response.spoonacularScore;
     delete response.id;
-    console.log(response);
     return response;
 
 }

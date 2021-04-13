@@ -27,20 +27,20 @@ export type SpoonGrocery = {
   _id?: string, //barcode
   spoon_id?: number, //identifier for the spoon, replace the id
   expiration?: string, //should be input by the user later
-  id?: number,
+  id?: number, //original spoon id
   title: string,
-  badges: string[] | null,
-  importantBadges: string[] | null,
-  breadcrumbs: string[] | null,
-  generatedText:string | null,
-  imageType: string | null,
-  ingredientCount: null | number,
-  ingredientList: string,
-  ingredients: SpoonIngredient[],
+  badges?: string[] | null,
+  importantBadges?: string[] | null,
+  breadcrumbs?: string[] | null,
+  generatedText?:string | null,
+  imageType?: string | null,
+  ingredientCount?: null | number,
+  ingredientList?: string,
+  ingredients?: SpoonIngredient[],
   likes?: number,
-  nutrition: {
+  nutrition?: {
     nutrients: SpoonNutrients[],
-    caloricBreakdown: {
+    caloricBreakdown?: {
       percentProtein: number,
       percentFat: number,
       percentCarbs: number
@@ -53,7 +53,7 @@ export type SpoonGrocery = {
   serving_size?: string,
   aisle?: null |string,
   number_of_servings?: number,
-  servings: {
+  servings?: {
     number: number,
     size: number,
     unit: string

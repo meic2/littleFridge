@@ -5,9 +5,13 @@ export function isSpoonGrocery(instance: SpoonGrocery | SpoonFailure | undefined
   if (instance === undefined)
     return false;
   if (typeof instance == "string"){
-    return (JSON.parse(instance) as SpoonGrocery).spoon_id !== undefined;
+    try{
+      return (JSON.parse(instance) as SpoonGrocery).title !== undefined;
+    }catch (e) {
+      return false;
+    }
   }
-  return (instance as SpoonGrocery).spoon_id !== undefined;
+  return (instance as SpoonGrocery).title !== undefined;
 
 }
 
@@ -16,7 +20,11 @@ export function isSpoonFailure(instance: SpoonGrocery | SpoonFailure | undefined
   if (instance === undefined)
     return false;
   if (typeof instance == "string"){
-    return (JSON.parse(instance) as SpoonFailure).status !== undefined;
+    try {
+      return (JSON.parse(instance) as SpoonFailure).status !== undefined;
+    }catch (e) {
+      return false;
+    }
   }
   return (instance as SpoonFailure).status !== undefined;
 }

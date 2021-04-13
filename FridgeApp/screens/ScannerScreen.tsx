@@ -34,8 +34,7 @@ export default (
   const handleScanned =(code:string)=>{
     route.params.onScanned(code);
   //TODO: navigate back to TabOneScreen
-    //route.onScanned(code);
-  }
+  };
 
   const handleBarCodeScanned = ({type, data}:{type: string, data:string}) => {
     setScanned(true);
