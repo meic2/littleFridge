@@ -1,4 +1,3 @@
-// import { ProfileData, ResponseQuery, profileParser } from '../../fetchGithub/GithubProfile';
 import {SpoonGrocery, SpoonFailure,} from '../types'
 import {
   isSpoonGrocery, isSpoonFailure

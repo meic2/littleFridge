@@ -5,14 +5,20 @@ import {isSpoonFailure, isSpoonGrocery} from "../utils";
 
 const API_SUFFIX = `apiKey=${encodeURIComponent(SPOON_APIKEY.apiKey)}`
 
-const STATUS_NORMAL = 200;
 const JSON_HEADER = {
     "Content-Type": "application/json"
 };
 
 
+/**
+ * a parser that deletes useless attribute and format all the fetched item from spoonacular
+ * @param response initial response of the spoonGrocery
+ * @param upcInput input from scanning
+ * @param userName further implement if need to have multi-user input
+ */
 export function groceryParser(response: SpoonGrocery, upcInput:string, userName:string):SpoonGrocery {
     //TODO: Hardcode the expiration, need to change here and unittest
+    //TODO: further implement authentication for user name
     response._id = upcInput;
     response.spoon_id = response.id;
     response.expiration="N/A";
@@ -46,10 +52,10 @@ async function fetchSpoonGroceryByUPC(upcInput:string) {
 }
 
 /**
- *
- * @param upcInput
- * @param usrName
- * @return undefined if error happens/no input, otherwise return SpoonGrocwery or SpoonFailure accordingly
+ * search the grocery product by UPC, but only with UPC-A is effective in this app
+ * @param upcInput upcInput for scanning upc
+ * @param usrName further implements for authetication
+ * @return undefined if error happens/no input, otherwise return SpoonGrocery or SpoonFailure accordingly
  */
 export async function searchGroceryByUPC(upcInput:string|undefined, usrName:string = 'meic2'):Promise<SpoonGrocery|SpoonFailure|undefined>{
     if(upcInput===undefined){
@@ -70,6 +76,6 @@ export async function searchGroceryByUPC(upcInput:string|undefined, usrName:stri
     }
 }
 
-const rightUPC = '049000028911';
+// const rightUPC = '049000028911';
 // const wrongUPC = '123';
-searchGroceryByUPC(rightUPC);
+// searchGroceryByUPC(rightUPC);

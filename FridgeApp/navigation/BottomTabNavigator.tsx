@@ -17,10 +17,10 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Fridge"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Fridge"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
@@ -47,6 +47,7 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
+//function for stack navigating the fridge screen
 function TabOneNavigator() {
   return (
     <TabOneStack.Navigator>

@@ -1,5 +1,9 @@
 import {SpoonGrocery, SpoonFailure,} from './types'
 
+/**
+ * the function cast a type guard to the instance with multiple potential type
+ * @param instance a instance with multiple type unions
+ */
 export function isSpoonGrocery(instance: SpoonGrocery | SpoonFailure | undefined |string)
   : instance is SpoonGrocery {
   if (instance === undefined)
@@ -15,6 +19,10 @@ export function isSpoonGrocery(instance: SpoonGrocery | SpoonFailure | undefined
 
 }
 
+/**
+ * the function cast a type guard to the instance with multiple potential type
+ * @param instance a instance with multiple type unions
+ */
 export function isSpoonFailure(instance: SpoonGrocery | SpoonFailure | undefined|string)
   : instance is SpoonGrocery {
   if (instance === undefined)

@@ -35,10 +35,8 @@ export async function getGrocery(upcId:string):Promise<undefined|SpoonGrocery> {
 }
 
 /**
- * async function to fetch the content from the spoonacular.
- * @param upcId the input of the user
- * @return message returned by the Spoon API. If didn't find anything, will return a format of
- * {status: number, message: string} message (without catched by the error)
+ * async function to fetch all the content from the spoonacular.
+ * @return message returned by the Spoon API. If didn't find anything, will return empty list from the db method.
  */
 export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
   const urlSuffix = `/grocery?grocery_id=all`;
@@ -54,6 +52,7 @@ export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
       return undefined;
     });
   if (response){
+    //todo: Check on the empty list scenario
     const parsed_grocery_arr:SpoonGrocery[] = JSON.parse(response);
     return (parsed_grocery_arr);
   }
@@ -62,10 +61,10 @@ export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
 
 
 /**
- * async function to fetch the content from the spoonacular.
+ * async function to input the content from the spoonacular.
  * @return message returned by the Spoon API. If didn't find anything, will return a format of
  * {status: number, message: string} message (without catched by the error)
- * @param groceryList
+ * @param groceryList if error happens, will return undefined with error being printed out; else the string (normal response message) will be printed out
  */
 export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<string|undefined>{
   if (groceryList === undefined){
@@ -84,31 +83,11 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
       console.log('Error: ', error);
       return undefined;
     });
-  console.log(groceryList._id);
-  console.log(response);
+  // console.log(groceryList._id);
+  // console.log(response);
   return response;
 }
 
-
-
-// export async function searchGroceryByUPC(upcInput:string|undefined, usrName:string = 'meic2'):Promise<SpoonGrocery|SpoonFailure|undefined>{
-//   if(upcInput===undefined){
-//     return undefined;
-//   }else{
-//     const response = await fetchGroceryByUPC(upcInput);
-//     if (response == undefined){
-//       return undefined;
-//     }
-//     if (response as SpoonFailure){
-//       return response;
-//     }
-//     return groceryParser(response, upcInput, usrName);
-//   }
-// }
-
-// const rightUPC = '030768535032';
-// const wrongUPC = '123';
-// searchGroceryByUPC(wrongUPC);
 
 const tempjson:SpoonGrocery = {
   title: 'Sundown Naturals Melatonin Gummies 5 mg - 60 CT',
@@ -148,5 +127,5 @@ const tempjson:SpoonGrocery = {
 
 // const response = putGrocery(tempjson);
 // const response = getGrocery( '030768535032');
-getAllGrocery();
+// getAllGrocery();
 

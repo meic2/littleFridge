@@ -125,5 +125,5 @@ def close_db(e=None):
 
 if __name__ == "__main__":
     item = [{'_id': 469604, 'title': 'Pleasant Valley Apple Wine', 'image': 'https://spoonacular.com/productImages/469604-312x231.jpg', 'imageType': 'jpg'}, {'id': 428573, 'title': 'NV Georgetown Vineyards Apple Wine', 'image': 'https://spoonacular.com/productImages/428573-312x231.jpg', 'imageType': 'jpg'}, {'id': 469695, 'title': 'Treleaven Sophistocrats Apple Mystique', 'image': 'https://spoonacular.com/productImages/469695-312x231.jpg', 'imageType': 'jpg'}, {'id': 430933, 'title': 'NV Great Shoals Spencerville Hard Apple Wine', 'image': 'https://spoonacular.com/productImages/430933-312x231.jpg', 'imageType': 'jpg'}, {'id': 14636, 'title': 'Dole Fruit Bowls Apples - Diced in 100% Juice', 'image': 'https://spoonacular.com/productImages/14636-312x231.jpg', 'imageType': 'jpg'}]
-
-    print(put_db("grocery", item[0]))
+    print(get_all_db("recipe"))
+    # print(put_db("grocery", item[0]))
