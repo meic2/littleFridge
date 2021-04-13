@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import {GroceryScanParamList} from "../types";
 
 
 
@@ -15,17 +16,15 @@ const styles = StyleSheet.create({
 export default (
   props: {
     navigation: any,
-    route: type,
-    // TODO: Cannot recognize OnSCan method; need to follow the Profile.tsx
-    onScanned: (code: string) => void,
-    upcCode: string
+    route: GroceryScanParamList,
   }
 ) => {
-  const { navigation, onScanned, upcCode} = props;
+  const { navigation, route} = props;
   const [hasPermission, setHasPermission] = useState<null|boolean>(null);
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
+    console.log("into scanner screen");
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
@@ -33,13 +32,21 @@ export default (
   }, []);
 
   const handleScanned =(code:string)=>{
-    console.log("handleScanned");
-    onScanned(code);
+    route.params.onScanned(code);
+  //TODO: navigate back to TabOneScreen
+    //route.onScanned(code);
   }
 
   const handleBarCodeScanned = ({type, data}:{type: string, data:string}) => {
     setScanned(true);
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    if (type === "org.gs1.EAN-13"){
+      //TODO: Only recognize if the EAN based on USA/CANADA, expo barcode only recognize EAN13 but not UPC-A
+      // here is a hard-code version to convert EAN to UPC-A, under product mainly from USA scenario
+
+      //TODO: convert UPC-E to UPC-A for spoonacular API
+      data = data.substr(1);
+    }
     handleScanned(data);
   };
 

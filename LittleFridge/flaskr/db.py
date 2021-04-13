@@ -21,7 +21,8 @@ extendedIngredients: list, (named from spoonAPI)
 }
 """
 from flask import abort
-
+from bson.json_util import dumps
+from bson.json_util import loads
 if __package__:
     from .extensions import mongo
 else:
@@ -53,6 +54,18 @@ def get_db(collection_name, food_id):
     return food
 
 
+def get_all_db(collection_name):
+    """
+    get all the entries of the collection
+    :param collection_name: grocery or recipe
+    :return: abnormal response or the all instance get in string format
+    """
+    assert collection_name in COLLECTION_LIST
+    collection = database[collection_name]
+    foods = list(collection.find({}))
+    return dumps(foods)
+
+
 def put_db(collection_name, instance):
     """
     create/insert new instance into the corresponding collection
@@ -62,6 +75,7 @@ def put_db(collection_name, instance):
     """
     assert collection_name in COLLECTION_LIST
     collection = database[collection_name]
+    print(instance)
     try:
         collection.insert_one(instance)
         return UPDATE_NORMAL_MESSAGE

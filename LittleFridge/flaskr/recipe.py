@@ -25,11 +25,15 @@ def get_recipe_info():
     # if the recipe id is not presented
     if "recipe_id" not in request.args:
         abort(db.STATUS_BAD_REQUEST, "Grocery ID is not presenting!")
-    recipe_id = int(request.args["recipe_id"])
+    recipe_id = (request.args["recipe_id"])
     if request.method == "POST":
         return update_recipe(recipe_id, request.json)
     if request.method == "DELETE":
         return delete_recipe(recipe_id)
+    # get: all or single id
+
+    if recipe_id == "all":
+        return db.get_all_db("recipe")
     return db.get_db("recipe", recipe_id)
 
 

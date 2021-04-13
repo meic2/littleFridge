@@ -3,7 +3,12 @@ import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {SpoonFailure, SpoonGrocery} from "../types";
+import {searchGroceryByUPC} from "../FridgeModel/SpoonHelper"
+import {getAllGrocery, putGrocery} from "../FridgeModel/FetchGrocery";
+import FridgeView from "../views/FridgeView";
+import {isSpoonFailure, isSpoonGrocery} from "../utils";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,26 +28,64 @@ const styles = StyleSheet.create({
 });
 
 export default function TabOneScreen({navigation}) {
-  const [upcCode, setUpCode] = useState<string>('');
+  const [upcCode, setUpCode] = useState<string>('empty');
+  const [groceries, setGroceries] = useState<SpoonGrocery[]|undefined>(undefined);
+
+  useEffect(()=>{
+    async function fetchGroceryList(){
+      const groceryList = await getAllGrocery();
+      setGroceries(groceryList);
+    }
+
+    async function fetchNewGrocery() {
+      const newGrocery = await searchGroceryByUPC(upcCode);
+      console.log("NEW GROCERY!!!");
+      if (isSpoonFailure(newGrocery)){
+        //TODO: page with user-input ingredient page
+        console.log(newGrocery);
+        return;
+      }
+      if(isSpoonGrocery(newGrocery)){
+        //TODO: navgiate to page with auto-filled ingredient page
+        //TODO: right now hard-code expiration date only to see dynamically update (change in SpoonHelper/groceryParser)
+        console.log("NEW GROCERY INPUT SUCCESS!!!");
+        const update = await putGrocery(newGrocery);
+      }
+    }
+
+    async function refreshScreen() {
+      await fetchNewGrocery();
+      await fetchGroceryList();
+    }
+    console.log("!!!!!!!", upcCode);
+    refreshScreen();
+  }, [upcCode]);
 
   function onScanned(inputCode:string){
+    console.log("into onscanned");
     setUpCode(inputCode)
   }
 
   return (
     <View style={styles.container}>
+      {/*only for debug purpose to show the upc code*/}
+      {/*{upcCode!=='empty'?<Text>{upcCode}</Text>:null}*/}
+      <Text style={styles.title}>Fridge</Text>
       <Button
         title={`scan`}
         onPress = {
           ()=>{
-            navigation.push('BarCodeScanner', { onScanned: onScanned, upcCode:upcCode} )
+            // console.log('code=',upcCode,'upcode');
+            navigation.push('BarCodeScanner', {onScanned:onScanned})
           }
         }
       />
 
-      <Text style={styles.title}>Tab One</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <FridgeView
+        groceries={groceries}
+        navigation={navigation}
+      />
     </View>
   );
 }

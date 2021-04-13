@@ -73,7 +73,7 @@ Week 4:
 |  Model layer |  3  |  -3 pts if JSON object used directly as a model <br> -1 pt if no clean separation of parsing request into the data class <br> -1 pt if no handling of errors |
 |  layout design  |  3  |  +1 pt: Elements resize with viewport changes and without horizontal overflow<br> +1 pt: Accommodate for specified screen sizes |
 |  Manual test plan |  5  |  0 pt: No manual tests; <br> for every 2 manual test, gain 1 point |
-|  snapshot test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
+|  unit test  |  5  |  0: Didn't implement tests <br> for every 2 unit test, gain 1 point |
 
 
 ### Week 3

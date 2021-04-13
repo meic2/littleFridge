@@ -11,42 +11,57 @@ export type BottomTabParamList = {
 
 export type TabOneParamList = {
   TabOneScreen: undefined;
+  BarCodeScanner: GroceryScanParamList;
+
 };
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
+export type GroceryScanParamList = {
+  onScanned: (code:string)=>void,
+}
+
 export type SpoonGrocery = {
-  id_?: string, //barcode
+  _id?: string, //barcode
   spoon_id?: number, //identifier for the spoon, replace the id
   expiration?: string, //should be input by the user later
   id?: number,
   title: string,
-  "badges": string[] | null,
-  "importantBadges": string[] | null,
-  "breadcrumbs": string[] | null,
-  "generatedText":string | null,
-  "imageType": string | null,
-  "ingredientCount": null | string,
-  "ingredientList": string,
-  "ingredients": SpoonIngredient[],
-  "likes"?: number,
-  "nutrition": {
-    "nutrients": SpoonNutrients[],
-    "caloricBreakdown": {
-      "percentProtein": number,
-      "percentFat": number,
-      "percentCarbs": number
+  badges: string[] | null,
+  importantBadges: string[] | null,
+  breadcrumbs: string[] | null,
+  generatedText:string | null,
+  imageType: string | null,
+  ingredientCount: null | number,
+  ingredientList: string,
+  ingredients: SpoonIngredient[],
+  likes?: number,
+  nutrition: {
+    nutrients: SpoonNutrients[],
+    caloricBreakdown: {
+      percentProtein: number,
+      percentFat: number,
+      percentCarbs: number
     },
+    calories?: number,
+    carbs?: string,
   },
-  "price"?: number,
-  "servings": {
-    "number": number,
-    "size": number,
-    "unit": string
+  price?: number,
+  description?:string,
+  serving_size?: string,
+  aisle?: null |string,
+  number_of_servings?: number,
+  servings: {
+    number: number,
+    size: number,
+    unit: string
   },
   spoonacularScore?: number,
+  upc?:string,
+  brand?:string,
+  images?:string[],
 }
 
 export type SpoonIngredient = {
@@ -71,6 +86,4 @@ export type SpoonRecipe = {
 
 }
 
-// export interface ScannerProps {
-//
-// }
+

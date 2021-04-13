@@ -17,9 +17,13 @@ we use Flask to set up our API, and the user will have two collection:
 
 
 ### GET
-`/grocery?grocery_id=`
+`/grocery?grocery_id=all`
 
-`/recipe?recipe_id=`
+`/grocery?grocery_id=` + one single upc ID
+
+`/recipe?recipe_id=all`
+
+`/grocery?grocery_id=` + one single recipeID
 
 ### PUT
 `/grocery` with Body input json string

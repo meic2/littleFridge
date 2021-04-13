@@ -1,7 +1,7 @@
-import {BASE_URL, SPOON_APIKEY} from './env'
+import {BASE_URL_SPOON, SPOON_APIKEY} from './env'
 import {SpoonGrocery, SpoonFailure,} from '../types'
 import "isomorphic-fetch"
-
+import {isSpoonFailure, isSpoonGrocery} from "../utils";
 
 const API_SUFFIX = `apiKey=${encodeURIComponent(SPOON_APIKEY.apiKey)}`
 
@@ -13,9 +13,11 @@ const JSON_HEADER = {
 
 export function groceryParser(response: SpoonGrocery, upcInput:string, userName:string):SpoonGrocery {
     delete response.spoonacularScore;
-    response.id_ = upcInput;
+    response._id = upcInput;
     response.spoon_id = response.id;
+    response.expiration="N/A";
     delete response.id;
+    console.log(response);
     return response;
 
 }
@@ -27,10 +29,9 @@ export function groceryParser(response: SpoonGrocery, upcInput:string, userName:
  * @return message returned by the Spoon API. If didn't find anything, will return a format of
  * {status: number, message: string} message (without catched by the error)
  */
-async function fetchGroceryByUPC(upcInput:string) {
+async function fetchSpoonGroceryByUPC(upcInput:string) {
     const urlSuffix = `/food/products/upc/${upcInput}?`;
-    console.log("?");
-    const UPCurl = BASE_URL+ urlSuffix + API_SUFFIX;
+    const UPCurl = BASE_URL_SPOON + urlSuffix + API_SUFFIX;
     const response = await fetch(UPCurl, {
         method: 'GET',
         headers: JSON_HEADER,
@@ -43,18 +44,31 @@ async function fetchGroceryByUPC(upcInput:string) {
     return response;
 }
 
-
-async function searchGroceryByUPC(upcInput:string, usrName:string = 'meic2'):Promise<SpoonGrocery|SpoonFailure|undefined>{
-    const response = await fetchGroceryByUPC(upcInput);
-    if (response == undefined){
+/**
+ *
+ * @param upcInput
+ * @param usrName
+ * @return undefined if error happens/no input, otherwise return SpoonGrocwery or SpoonFailure accordingly
+ */
+export async function searchGroceryByUPC(upcInput:string|undefined, usrName:string = 'meic2'):Promise<SpoonGrocery|SpoonFailure|undefined>{
+    if(upcInput===undefined){
         return undefined;
+    }else{
+        const response = await fetchSpoonGroceryByUPC(upcInput);
+        if (response == undefined){
+            return undefined;
+        }else if (isSpoonFailure(response)){
+            console.log(response);
+            return response;
+        }else{
+            console.log("new instance!");
+            console.log(response);
+            return groceryParser((response as SpoonGrocery), upcInput, usrName);
+        }
+
     }
-    if (response as SpoonFailure){
-      return response;
-    }
-    return groceryParser(response, upcInput, usrName);
 }
 
-// const rightUPC = '030768535032';
+const rightUPC = '049000028911';
 // const wrongUPC = '123';
-// searchGroceryByUPC(wrongUPC);
+searchGroceryByUPC(rightUPC);
