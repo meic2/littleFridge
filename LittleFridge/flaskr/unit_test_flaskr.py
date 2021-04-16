@@ -1,5 +1,9 @@
-from .recipe import check_required_field_recipe
-from .grocery import check_required_field
+if __package__:
+    from .recipe import check_required_field_recipe
+    from .grocery import check_required_field
+else:
+    from recipe import check_required_field_recipe
+    from grocery import check_required_field
 import unittest
 
 
@@ -11,7 +15,6 @@ class UnitTestParser(unittest.TestCase):
                     }
 
         assert check_required_field_recipe(instance) == False
-
 
     def test_check_required_field(self):
         instance = {"grocery_id": 124,

@@ -17,11 +17,11 @@ def client():
 
 
 def test_put_grocery_info(client):
-    instance = {"grocery_id": 124,
-                "grocery_name": "beef slice",
+    instance = {"_id": 124,
+                "title": "beef slice",
                 "spoon_id": 124,
                 "category": "meat",
-                "deadline": "12-2-1",
+                "expiration": "12-2-1",
                 "size": "12 oz"
                 }
     prefix = "/grocery"
@@ -32,7 +32,7 @@ def test_put_grocery_info(client):
 def test_put_grocery_info_wrong(client):
     instance = {
         "category": "meat",
-        "deadline": "12-2-1",
+        "expiration": "12-2-1",
         "size": "12 oz"
     }
     prefix = "/grocery"
@@ -41,11 +41,11 @@ def test_put_grocery_info_wrong(client):
 
 
 def test_post_grocery_info(client):
-    instance = {"grocery_id": 124,
-                "grocery_name": "beef slice2",
+    instance = {"_id": 124,
+                "title": "beef slice2",
                 "spoon_id": 124,
                 "category": "meat",
-                "deadline": "12-2-1",
+                "expiration": "12-2-1",
                 "size": "12 oz"
                 }
     prefix = "/grocery?grocery_id=124"
@@ -54,11 +54,11 @@ def test_post_grocery_info(client):
 
 
 def test_post_grocery_info_wrong(client):
-    instance = {"grocery_id": 124,
-                "grocery_name": "beef slice2",
+    instance = {"_id": 124,
+                "title": "beef slice2",
                 "spoon_id": 124,
                 "category": "meat",
-                "deadline": "12-2-1",
+                "expiration": "12-2-1",
                 "size": "12 oz"
                 }
     prefix = "/grocery"
@@ -67,11 +67,11 @@ def test_post_grocery_info_wrong(client):
 
 
 def test_post_grocery_info_cannot_found(client):
-    instance = {"grocery_id": 124,
-                "grocery_name": "beef slice2",
+    instance = {"_id": 124,
+                "title": "beef slice2",
                 "spoon_id": 124,
                 "category": "meat",
-                "deadline": "12-2-1",
+                "expiration": "12-2-1",
                 "size": "12 oz"
                 }
     prefix = "/grocery?grocery_id=1"
@@ -83,7 +83,7 @@ def test_get_grocery_info(client):
     prefix = "/grocery?grocery_id=124"
     response = client.get(prefix)
     temp_dict = json.loads(response.data)
-    assert temp_dict["grocery_id"] == 124
+    assert temp_dict["_id"] == 124
 
 
 def test_get_grocery_info_wrong(client):
@@ -105,7 +105,7 @@ def test_delete_grocery_info(client):
 
 
 def test_put_recipe_info(client):
-    instance = {"recipe_id": 124,
+    instance = {"_id": 124,
                 "recipe_name": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
@@ -126,7 +126,7 @@ def test_put_recipe_info_wrong(client):
 
 
 def test_post_recipe_info(client):
-    instance = {"recipe_id": 124,
+    instance = {"_id": 124,
                 "recipe_name": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
@@ -137,7 +137,7 @@ def test_post_recipe_info(client):
 
 
 def test_post_grocery_recipe_wrong(client):
-    instance = {"recipe_id": 124,
+    instance = {"_id": 124,
                 "recipe_name": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
@@ -148,7 +148,7 @@ def test_post_grocery_recipe_wrong(client):
 
 
 def test_post_grocery_recipe_cannot_found(client):
-    instance = {"recipe_id": 124,
+    instance = {"_id": 124,
                 "recipe_name": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
@@ -163,7 +163,7 @@ def test_get_recipe_info(client):
     response = client.get(prefix)
     print(response.data)
     temp_dict = json.loads(response.data)
-    assert temp_dict["recipe_id"] == 124
+    assert temp_dict["_id"] == 124
 
 
 def test_get_recipe_info_wrong(client):

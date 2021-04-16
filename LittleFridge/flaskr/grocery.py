@@ -26,11 +26,14 @@ def get_grocery_info():
     # if the grocery id is not presented
     if "grocery_id" not in request.args:
         abort(db.STATUS_BAD_REQUEST, "Grocery ID is not presenting!")
-    grocery_id = int(request.args["grocery_id"])
+    grocery_id = (request.args["grocery_id"])
     if request.method == "POST":
         return update_grocery(grocery_id, request.json)
     if request.method == "DELETE":
         return delete_grocery(grocery_id)
+    # get: all or single id
+    if grocery_id == "all":
+        return db.get_all_db("grocery");
     return db.get_db("grocery", grocery_id)
 
 
@@ -75,10 +78,9 @@ def check_required_field(instance):
     :param instance: instace to be checked
     :return: boolean
     """
-    if "grocery_id" not in instance:
-        return False
-    if "deadline" not in instance:
-        return False
-    if "grocery_name" not in instance:
-        return False
+    checklist = ["_id", "expiration", "title"]
+    for check_item in checklist:
+        if check_item not in instance:
+            return False
+
     return True
