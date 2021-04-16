@@ -8,6 +8,7 @@ import {searchGroceryByUPC} from "../FridgeModel/SpoonHelper"
 import {getAllGrocery, putGrocery} from "../FridgeModel/FetchGrocery";
 import FridgeView from "../views/FridgeView";
 import {isSpoonFailure, isSpoonGrocery} from "../utils";
+import LoadingView from "../views/LoadingView";
 
 const styles = StyleSheet.create({
   container: {
@@ -29,10 +30,12 @@ const styles = StyleSheet.create({
 export default function TabOneScreen({navigation}) {
   const [upcCode, setUpCode] = useState<string>('empty');
   const [groceries, setGroceries] = useState<SpoonGrocery[]|undefined>(undefined);
+  const [load, setLoad] = useState<boolean>(true);
 
   useEffect(()=>{
     async function fetchGroceryList(){
       const groceryList = await getAllGrocery();
+      // console.log("useEffect TaboneScreen line 38", groceryList);
       setGroceries(groceryList);
     }
 
@@ -58,6 +61,7 @@ export default function TabOneScreen({navigation}) {
     }
     console.log("!!!!!!!", upcCode);
     refreshScreen();
+    setLoad(false);
   }, [upcCode]);
 
   function onScanned(inputCode:string){
@@ -67,24 +71,28 @@ export default function TabOneScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      {/*only for debug purpose to show the upc code*/}
-      {/*{upcCode!=='empty'?<Text>{upcCode}</Text>:null}*/}
-      <Text style={styles.title}>Fridge</Text>
-      <Button
-        title={`scan`}
-        onPress = {
-          ()=>{
-            // console.log('code=',upcCode,'upcode');
-            navigation.push('BarCodeScanner', {onScanned:onScanned})
-          }
-        }
-      />
-
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <FridgeView
-        groceries={groceries}
-        navigation={navigation}
-      />
+      {load ? <LoadingView />
+        // only for debug purpose to show the upc code
+        // upcCode!=='empty'?<Text>{upcCode}</Text>:null
+        :
+        <View style={{ ...styles.container, width: '100%' }}>
+          <Text style={styles.title}>Fridge</Text>
+          <Button
+            title={`scan`}
+            onPress = {
+              ()=>{
+              // console.log('code=',upcCode,'upcode');
+              navigation.push('BarCodeScanner', {onScanned:onScanned})
+              }
+            }
+          />
+          <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+          <FridgeView
+          groceries={groceries}
+          navigation={navigation}
+          />
+        </View>
+      }
     </View>
   );
 }

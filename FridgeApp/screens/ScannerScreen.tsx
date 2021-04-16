@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import {Text, View, StyleSheet, Button, Route} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {GroceryScanParamList} from "../types";
 
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 export default (
   props: {
     navigation: any,
-    route: GroceryScanParamList,
+    route: Route,
   }
 ) => {
   const { navigation, route} = props;
@@ -39,7 +39,7 @@ export default (
   const handleBarCodeScanned = ({type, data}:{type: string, data:string}) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    if (type === "org.gs1.EAN-13"){
+    if (data.length ===13){
       //TODO: Only recognize if the EAN based on USA/CANADA, expo barcode only recognize EAN13 but not UPC-A
       // here is a hard-code version to convert EAN to UPC-A, under product mainly from USA scenario
 

@@ -34,9 +34,9 @@ export default function FridgeView(
     <View style={{ ...styles.container, width: '100%' }}>
       {console.log("INTO FRIDGE VIEW!!!!!!!!!!!!!!!!!!!!!!!!")}
       <ScrollView style={{ width: '100%' }}>
-        {groceries
+        {
+          groceries
           ? groceries.map((grocery, index) =>
-            // console.log("Start list" + i)
             (
               <ListItem
                 // button
@@ -56,7 +56,6 @@ export default function FridgeView(
                       </ListItem.Subtitle>
                     )
                     : null}
-
                 </ListItem.Content>
               </ListItem>
             )) : null}

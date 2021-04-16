@@ -48,12 +48,15 @@ export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
   }).then(r => (r.text()))
     .catch((error) => {
       //should less happened
-      console.log('Error: ', error.toString());
+      console.log('GETALLGROCERY Error: ', error.toString());
       return undefined;
     });
+  // console.log(response);
   if (response){
     //todo: Check on the empty list scenario
     const parsed_grocery_arr:SpoonGrocery[] = JSON.parse(response);
+    console.log("Fetching the food from the local server");
+    // console.log(response);
     return (parsed_grocery_arr);
   }
   return undefined;
@@ -82,9 +85,12 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
       //should less happened
       console.log('Error: ', error);
       return undefined;
+      //TODO: error of duplicate error: need to getGrocery and return a good page
+      //TODO: error of cannot recognize: go to new instance page
+      //TODO: otherwise, alert(error)
     });
   // console.log(groceryList._id);
-  // console.log(response);
+  console.log(response);
   return response;
 }
 
