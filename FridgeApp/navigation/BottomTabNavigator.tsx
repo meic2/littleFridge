@@ -2,13 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import ScannerScreen from "../screens/ScannerScreen";
+import GroceryScreen from "../screens/GroceryScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -23,7 +24,7 @@ export default function BottomTabNavigator() {
         name="Fridge"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="fridge" size={24} color="black" />,
         }}
       />
       <BottomTab.Screen
@@ -57,6 +58,7 @@ function TabOneNavigator() {
         options={{ headerTitle: 'Fridge' }}
       />
       <TabOneStack.Screen name="BarCodeScanner" component={ScannerScreen} />
+      <TabOneStack.Screen name={"GroceryScreen"} component={GroceryScreen}/>
     </TabOneStack.Navigator>
   );
 }

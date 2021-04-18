@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet, Button, Route} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import {GroceryScanParamList} from "../types";
+import {FunctionPassingParamList} from "../types";
 
 
 

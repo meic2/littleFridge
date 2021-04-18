@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
+import { ListItem, Avatar, } from 'react-native-elements';
 import { View } from '../components/Themed';
 import {SpoonGrocery} from "../types";
-// import { FollowerAttrData } from '../fetchGithub/GithubFollower';
-// import { FollowerStackNavigationProp } from '../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function FridgeView(
+export default function FridgeListView(
   props: {
     navigation: any,
     groceries: SpoonGrocery[] | undefined
@@ -39,11 +37,11 @@ export default function FridgeView(
           ? groceries.map((grocery, index) =>
             (
               <ListItem
-                // button
-                // onPress={() => {
-                //   console.log(`click on follower listitem ${follower.username}`);
-                //   navigation.navigate('Profile', { userName: follower.username });
-                // }}
+                button
+                onPress={() => {
+                  console.log(`click on ${grocery._id}`);
+                  navigation.navigate('GroceryScreen', { grocery: grocery});
+                }}
                 key={`i${JSON.stringify(index)}`}
                 bottomDivider
               >

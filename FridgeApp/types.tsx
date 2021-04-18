@@ -9,18 +9,23 @@ export type BottomTabParamList = {
   TabTwo: undefined;
 };
 
+export type GroceryParamList ={
+  Grocery: SpoonGrocery;
+  onInput: FunctionPassingParamList
+}
+
 export type TabOneParamList = {
   TabOneScreen: undefined;
-  BarCodeScanner: GroceryScanParamList;
-
+  BarCodeScanner: FunctionPassingParamList;
+  GroceryScreen: GroceryParamList
 };
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
-export type GroceryScanParamList = {
-  onScanned: (code:string)=>void,
+export type FunctionPassingParamList = {
+  onScanned: ()=>void,
 }
 
 export type SpoonGrocery = {

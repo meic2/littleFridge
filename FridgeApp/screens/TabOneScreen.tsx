@@ -6,9 +6,9 @@ import {useEffect, useState} from "react";
 import {SpoonFailure, SpoonGrocery} from "../types";
 import {searchGroceryByUPC} from "../FridgeModel/SpoonHelper"
 import {getAllGrocery, putGrocery} from "../FridgeModel/FetchGrocery";
-import FridgeView from "../views/FridgeView";
 import {isSpoonFailure, isSpoonGrocery} from "../utils";
 import LoadingView from "../views/LoadingView";
+import FridgeOverallView from "../views/FridgeOverallView";
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +59,6 @@ export default function TabOneScreen({navigation}) {
       await fetchNewGrocery();
       await fetchGroceryList();
     }
-    console.log("!!!!!!!", upcCode);
     refreshScreen();
     setLoad(false);
   }, [upcCode]);
@@ -75,23 +74,11 @@ export default function TabOneScreen({navigation}) {
         // only for debug purpose to show the upc code
         // upcCode!=='empty'?<Text>{upcCode}</Text>:null
         :
-        <View style={{ ...styles.container, width: '100%' }}>
-          <Text style={styles.title}>Fridge</Text>
-          <Button
-            title={`scan`}
-            onPress = {
-              ()=>{
-              // console.log('code=',upcCode,'upcode');
-              navigation.push('BarCodeScanner', {onScanned:onScanned})
-              }
-            }
-          />
-          <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-          <FridgeView
-          groceries={groceries}
+        <FridgeOverallView
           navigation={navigation}
-          />
-        </View>
+          groceries={groceries}
+          onScanned={onScanned}
+        />
       }
     </View>
   );
