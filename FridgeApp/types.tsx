@@ -58,17 +58,18 @@ export type SpoonGrocery = {
   serving_size?: string,
   aisle?: null |string,
   number_of_servings?: number,
-  servings?: {
-    number: number,
-    size: number,
-    unit: string
-  },
+  servings?: SpoonServing,
   spoonacularScore?: number,
   upc?:string,
   brand?:string,
   images?:string[],
 }
 
+export type SpoonServing={
+  number: number,
+  size: number,
+  unit: string
+}
 export type SpoonIngredient = {
   description: string | null,
   name: string | null,

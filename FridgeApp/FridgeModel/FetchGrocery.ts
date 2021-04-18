@@ -1,5 +1,5 @@
 import {FLASK_BASE_URL} from "./env";
-import {SpoonGrocery} from "../types";
+import {SpoonGrocery, SpoonServing} from "../types";
 import "isomorphic-fetch"
 import {isSpoonGrocery} from "../utils";
 
@@ -88,6 +88,54 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
       //TODO: error of duplicate error: need to getGrocery and return a good page
       //TODO: error of cannot recognize: go to new instance page
       //TODO: otherwise, alert(error)
+    });
+  // console.log(groceryList._id);
+  console.log(response);
+  return response;
+}
+
+/**
+ *
+ * @param title
+ * @param importantBadges
+ * @param servings
+ * @param expiration
+ * @param _id: the upc id to distinguish the input
+ * @param newInstance
+ * @param description
+ */
+export async function postGrocery(
+  title:string, importantBadges:string[], servings:SpoonServing,
+  expiration:string, _id:string,  newInstance:boolean, description:string):Promise<string|undefined>{
+  const newGroceryInstance:SpoonGrocery={
+    title:title,
+    spoon_id:-1, //indicating this is irrelevant to the spoondatabase
+    importantBadges:importantBadges,
+    servings:servings,
+    expiration:expiration,
+    description:description
+  };
+  if (newInstance===true){
+    //make sure that the upcID is set in the new instance
+    newGroceryInstance["_id"] = _id;
+    return await putGrocery(newGroceryInstance);
+  }
+  //here we are going to update existing grocery.
+  const urlSuffix = `/grocery?grocery_id=${_id}`;
+  const url = FLASK_BASE_URL+ urlSuffix;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: JSON_HEADER,
+    body:JSON.stringify(newGroceryInstance),
+  }).then(r => {
+    return r.text();
+  })
+    .catch((error) => {
+      //should less happened
+      console.log('Error: ', error);
+      return undefined;
+      //TODO: should not happened: check for not exist in the library
     });
   // console.log(groceryList._id);
   console.log(response);

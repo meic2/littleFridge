@@ -40,7 +40,7 @@ export default function FridgeOverallView(
         onPress = {
           ()=>{
             // console.log('code=',upcCode,'upcode');
-            navigation.push('BarCodeScanner', {onScanned:onScanned})
+            navigation.push('BarCodeScanner', {onScanned:onScanned, newInstance:false})
           }
         }
       />
