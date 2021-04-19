@@ -1,7 +1,7 @@
 import {FLASK_BASE_URL} from "./env";
-import {SpoonGrocery, SpoonServing} from "../types";
+import {SpoonFailure, SpoonGrocery, SpoonServing} from "../types";
 import "isomorphic-fetch"
-import {isSpoonGrocery} from "../utils";
+import {dateFormate, isSpoonGrocery} from "../utils";
 
 
 const JSON_HEADER = {
@@ -69,7 +69,7 @@ export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
  * {status: number, message: string} message (without catched by the error)
  * @param groceryList if error happens, will return undefined with error being printed out; else the string (normal response message) will be printed out
  */
-export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<string|undefined>{
+export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<string|undefined|SpoonFailure>{
   if (groceryList === undefined){
     return undefined;
   }
@@ -83,8 +83,7 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
   })
     .catch((error) => {
       //should less happened
-      console.log('Error: ', error);
-      return undefined;
+      return {status:'500', message:error};
       //TODO: error of duplicate error: need to getGrocery and return a good page
       //TODO: error of cannot recognize: go to new instance page
       //TODO: otherwise, alert(error)
@@ -95,7 +94,7 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
 }
 
 /**
- *
+ * can submit undefined attributes: if so, there is nothing change in the database(good).
  * @param title
  * @param importantBadges
  * @param servings
@@ -105,8 +104,12 @@ export async function putGrocery(groceryList:SpoonGrocery|undefined):Promise<str
  * @param description
  */
 export async function postGrocery(
-  title:string, importantBadges:string[], servings:SpoonServing,
-  expiration:string, _id:string,  newInstance:boolean, description:string):Promise<string|undefined>{
+  title:string, importantBadges:string[]|undefined, servings:SpoonServing|undefined,
+  expiration:string, _id:string,  newInstance:boolean, description:string|undefined): Promise<string | SpoonFailure | undefined>{
+  const expireResponse:SpoonFailure = dateFormate(expiration);
+  if (expireResponse.status!== "200"){
+    return expireResponse;
+  }
   const newGroceryInstance:SpoonGrocery={
     title:title,
     spoon_id:-1, //indicating this is irrelevant to the spoondatabase
@@ -134,7 +137,7 @@ export async function postGrocery(
     .catch((error) => {
       //should less happened
       console.log('Error: ', error);
-      return undefined;
+      return {status:'500', message:error};
       //TODO: should not happened: check for not exist in the library
     });
   // console.log(groceryList._id);
@@ -144,42 +147,26 @@ export async function postGrocery(
 
 
 const tempjson:SpoonGrocery = {
-  title: 'Sundown Naturals Melatonin Gummies 5 mg - 60 CT',
-  price: 0,
-  likes: 0,
-  badges: [ 'egg_free', 'gluten_free' ],
+  title: 'testing',
   importantBadges: [ 'no_preservatives', 'gluten_free', 'nut_free' ],
-  nutrition:
-    { nutrients: [],
-      caloricBreakdown: { percentProtein: 0, percentFat: 0, percentCarbs: 100 },
-      calories: 15,
-      carbs: '4g' },
   serving_size: '2.0 gummies',
   number_of_servings: 25,
   servings: { number: 25, size: 2, unit: 'gummies' },
-  breadcrumbs: [ 'grains', 'ingredient' ],
-  aisle: null,
   description:
-    'Smart facts:Naturally sourced colors.No preservatives.Clinically studied ingredient.Drug-free sleep aid*.For occasional sleeplessness*.Made in the USA with select ingredients from around the world.No gluten, no wheat, no milk, no lactose, no artificial flavor, no artificial sweetener, no preservatives, no soy, no yeast, no fish. Sodium free.Questions? Call toll free 1-888-VITAHELP (848-2435) or visit us at www.sundownnaturals.com.Â©2016.',
+    'testing description',
   generatedText: null,
-  upc: '030768535032',
-  brand: 'Sundown Naturals',
-  ingredients:
-    [ { name: 'nutrient', safety_level: null, description: null },
-      { name: 'corn syrup', safety_level: null, description: null } ],
-  ingredientCount: 10,
-  ingredientList:
-    'Corn Syrup, Sugar, Gelatin. Contains 2% of: Citric Acid, Fractionated Coconut Oil (contains Carnauba Wax), Natural Flavor, Pectin, Vegetable Juice (Color)',
+  upc: '0123',
   images:
     [ 'https://spoonacular.com/productImages/409329-312x231.jpg',
       'https://spoonacular.com/productImages/409329-90x90.jpg' ],
   imageType: 'jpg',
-  _id: '030768535032',
-  spoon_id: 409329,
-  expiration: '12-2-21'};
+  _id: '0123',
+  expiration:'2021-09-09'
+  };
 
 
 // const response = putGrocery(tempjson);
 // const response = getGrocery( '030768535032');
 // getAllGrocery();
+const response = postGrocery( 'Diet Coke', ['update'], undefined, '12-09-09', '0123',false,'test' );
 
