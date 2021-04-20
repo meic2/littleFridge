@@ -1,4 +1,4 @@
-# Manual Test Plan For LittleFridge
+# Manual Test Plan For LittleFridge week 3
 
 This project implements a digital library to store the grocery information into the app.
 
@@ -32,12 +32,20 @@ There are two parts of the project:
         |__ FridgeApp
            |__ FridgeModel
               |__ FetchGrocery.ts
+              |__ FetchRecipe.ts
               |__ SpoonHelper.ts   
            |__ screens
               |__ TabOneScreen.tsx
               |__ ScannerScreen.tsx
+              |__ TabTwoScreen.tsx
+              |__ RecipeScreen.tsx
            |__ views
-              |__ FridgeListView.tsx.tsx
+              |__ FridgeListView.tsx
+              |__ FridgeOverallView.tsx
+              |__ GroceryView.tsx
+              |__ LoadingView.tsx
+              |__ RecipeView.tsx
+              |__ RecipeMemoView.tsx
            |__ navigation       
            |__ __test__
            
@@ -120,20 +128,34 @@ to test typescript's utility function, run jest
 The overall logic of the App:
 
 - Fridge
-    - the page is seperated into Barcode + scrollView
-    - You can go to BarcodeScanner Page to scan grocery's page
-        - if the barcode is recognised within the scope of the database we have, we will direct you to a view page of 
-        auto-filled individual ingredient page. `...still implementing`
-        - if the barcode cannot be recognized, we will direct you to individual ingredient page that need user to fill in the value. 
-    - scrollView allows you to see all the grocery items in the digitalized fridge, and will update accordingly. 
+    - the page is separated into Barcode scanner and search bar + scrollView
+        - search bar:
+            - you can search the grocery that you have by name
+        - You can go to BarcodeScanner Page to scan grocery's page `...still implementing`
+            - if the barcode is recognised within the scope of the database we have, we will direct you to a view page of 
+            auto-filled individual ingredient page. 
+            - if the barcode cannot be recognized, we will direct you to individual ingredient page that need user to fill in the value. 
+        - scrollView allows you to see all the grocery items in the digitalized fridge, and will update accordingly. 
+    - individual grocery page:
+        - if you click into the list of the items in the digital fridge, you can see your grocery page with specific information
+        - you can also update the item, and going back to the former page will refresh the page
 - Recipe
-    - `...still implementing`
+    - search bar allows the user to search for recipe `still implementing`
+    - scrollView allows you to see all the recipe items in the memo of the recipe that user records, and will update accordingly. 
+    - individual recipe page:
+        - if you click into the list of the items in the digital fridge, you can see your recipe page with specific information
+        - you can also update the item, and going back to the former page will refresh the page
+- recipeSearching `still implementing`
 
 
 ### Fridge View
 here you can see that the FridgeListView is has two parts. 
 
-![alt text](manualTest_ref/FridgeView_before.PNG "")
+![alt text](manualTest_ref/FridgeView_beforeScan.png "")
+
+You can click on the search bar and type in the names that you want to search. 
+
+`still implementing...`
 
 If you click onto the scan button, you will see that the page looks like this:
 
@@ -142,16 +164,64 @@ If you click onto the scan button, you will see that the page looks like this:
 Use the camera to focus on the barcode that you want to scan, 
 (here we use the barcode from the pack of the diet coke as experiment) 
 
+If you scan something (e.g. QR code) that you do not wish to scan,
+then if an alert pop up, you can close the alert window, and tap again to scan again.
+
+![alt text](manualTest_ref/Scann_again.PNG "")
+
 if successful the app will return with an alert:
 
 ![alt text](manualTest_ref/Scanned.PNG "")
 
-Then, when you go back to the view, you will be able to see an update on the Fridge View:
+Then, after click Okay, the navigator will automatically direct the user to the ingredient page. 
 
-![alt text](manualTest_ref/FridgeView.PNG "")
+
+#### Grocery View
+
+
+There are two part of the scenario: if the barcode cannot be recognized by the external API database, or they can be recorgnized.
+
+1. if it is recognized, the ingredient page will appear with every information of the external API.
+You can edit whatever part of information you like except the upc bar code page, as this will be the fixed key for the database.
+
+![alt text](manualTest_ref/groceryItem_edit.png "")
  
-If, however, you scan something (e.g. QR code) that you do not wish to scan,
-then if an alert pop up, you can close the alert window, and tap again to scan again.
+ 
+2 . if it is not recognized by the external API (they don't have this item/this barcoe in theire database)
+the ingredient page will appear with empty ingredient page that directs you to input everything. 
 
-![alt text](manualTest_ref/Scann_again.PNG "")
+![alt text](manualTest_ref/scan_notFound.jpeg "")
+
+after clicking on okay, user should be able to see the individual grocery with input space. 
+
+![alt text](manualTest_ref/scan_notfound_grocery.jpeg "")
+
+
+
+The tag can also flexibally input using `space` to split the tags. 
+
+![alt text](manualTest_ref/grocery_edit_tag.png "")
+
   
+After hit the submit button, if the server correctly uploads the information, the alert will show up:
+
+![alt text](manualTest_ref/grocery_item_submit_success.png "")
+
+Else, if the date format is input in a wrong way, or the server could not upload the information, the alert will notify the user. 
+
+![alt text](manualTest_ref/grocery_item_submit_fail.png "")
+
+After confirming the submit button, user could edit the page again based on his/her wish, or they could go back to the fridge view. 
+Now they can see that the fridge view is update correctly. 
+
+### Recipe List
+
+Here is the screenshot for the recipe list view. Here the user can see whatever they've created before. 
+when clicking on the individual item, the app will directs the user to the individual recipe view as well. 
+![alt text](manualTest_ref/recipe_list.png "")
+
+### Recipe (Individual)
+
+![alt text](manualTest_ref/recipe_view.png "")
+
+This recipe view is similiar to the grocery view, which will show the created date, the ingredients, the description and the image. 

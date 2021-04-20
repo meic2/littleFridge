@@ -3,9 +3,9 @@ import {Route, StyleSheet} from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import {useEffect} from "react";
-import GroceryView from "../views/GroceryView";
+import RecipeView from "../views/RecipeView";
 import {useState} from "react";
-import {SpoonGrocery} from "../types";
+import {Recipe, } from "../types";
 
 const styles = StyleSheet.create({
   container: {
@@ -26,32 +26,27 @@ const styles = StyleSheet.create({
 
 
 
-export default function GroceryScreen(
+export default function RecipeScreen(
   props: {
     navigation:any,
-    route: Route, //grocery
+    route: Route, //recipe
   }
 ) {
   const [load, setLoad] = useState<boolean>(true);
   const {navigation, route} = props;
-  const [groceryItem, setGrocery,] = useState<SpoonGrocery|undefined>(route.params.grocery);
+  const [recipe, setRecipe,] = useState<Recipe|undefined>(route.params.recipe);
 
 
   useEffect(()=>{
     setLoad(false);
   },[load]);
 
-  function onInput(newGrocery:SpoonGrocery){
-    console.log("onInput!");
-    setGrocery(newGrocery);
-  }
   return (
     <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
-    <GroceryView
+    <RecipeView
       navigation={navigation}
-      grocery={groceryItem}
-      onInput={onInput}
-      newInstance={route.params.newInstance}/>
+      recipe={recipe}
+      newInstance={false}/>
     </View>
   );
 }

@@ -6,23 +6,28 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Fridge: undefined;
-  TabTwo: undefined;
+  Recipe: undefined;
 };
 
 export type GroceryParamList ={
   Grocery: SpoonGrocery;
-  onInput: FunctionPassingParamList
 }
 
 export type TabOneParamList = {
   TabOneScreen: undefined;
-  BarCodeScanner: FunctionPassingParamList;
+  BarCodeScanner: undefined;
   GroceryScreen: GroceryParamList
 };
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+  RecipeScreen: RecipeParamList
 };
+
+export type RecipeParamList ={
+  Recipe: Recipe;
+}
+
 
 export type FunctionPassingParamList = {
   onScanned: ()=>void,
@@ -66,9 +71,9 @@ export type SpoonGrocery = {
 }
 
 export type SpoonServing={
-  number: number,
-  size: number,
-  unit: string
+  number: number|undefined,
+  size: number|undefined,
+  unit: string|undefined
 }
 export type SpoonIngredient = {
   description: string | null,
@@ -88,8 +93,91 @@ export type SpoonFailure = {
   message: string
 }
 
-export type SpoonRecipe = {
-
+export type SpoonRecipeByIngredients = {
+  "id": number,
+  "image": string,
+  "imageType": string,
+  "likes": number,
+  "missedIngredientCount": number,
+  "missedIngredients": spoonIngredients[],
 }
 
+export type SpoonRecipe = {
+  "id": number,
+  "title": string,
+  "image": string,
+  "imageType": string,
+  "servings": number,
+  "readyInMinutes": number,
+  "license": string,
+  "sourceName": string,
+  "sourceUrl": string,
+  "spoonacularSourceUrl": string,
+  "aggregateLikes": number,
+  "healthScore": number,
+  "spoonacularScore": number,
+  "pricePerServing": number,
+  "analyzedInstructions": [],
+  "cheap": boolean,
+  "creditsText": string,
+  "cuisines": [],
+  "dairyFree": boolean,
+  "diets": [],
+  "gaps": string,
+  "glutenFree": boolean,
+  "instructions": string,
+  "ketogenic": boolean,
+  "lowFodmap": boolean,
+  "occasions": [],
+  "sustainable": boolean,
+  "vegan": boolean,
+  "vegetarian": boolean,
+  "veryHealthy": boolean,
+  "veryPopular": boolean,
+  "whole30": boolean,
+  "weightWatcherSmartPoints": number,
+  "dishTypes": string [],
+  "extendedIngredients": spoonIngredients[],
+  "summary": string,
+  "winePairing": {
+    "pairedWines": string[],
+    "pairingText": string,
+    "productMatches": [
+      {
+        "id": number,
+        "title": string,
+        "description": string
+        "price": string,
+        "imageUrl": string,
+        "averageRating": number,
+        "ratingCount": number,
+        "score": number,
+        "link": string
+      }
+      ]
+  },
+}
 
+export type Recipe={
+  _id?:string,  //should be the key: equals to the title
+  title: string,
+  image?: string,
+  spoon_id: number,
+  createDate:string,
+  ingredients?:string[],
+  description?:string
+}
+
+export type spoonIngredients = {
+  "aisle": string,
+  "amount": number,
+  "id": number,
+  "image": string,
+  "meta": [],
+  "name": string,
+  "original": string,
+  "originalName": string,
+  "unit": string,
+  "unitLong": string,
+  "unitShort": string
+}

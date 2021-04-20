@@ -3,7 +3,7 @@ import {Input, Text, Image, Avatar, Button} from 'react-native-elements';
 import {SafeAreaViewComponent, ScrollView, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import * as React from 'react';
 import { View } from '../components/Themed';
-import {SpoonFailure, SpoonGrocery, SpoonServing} from "../types";
+import {Recipe, SpoonFailure, SpoonGrocery, SpoonServing} from "../types";
 import {emptyImageUri} from "../constants/util";
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import Layout from "../constants/Layout";
@@ -11,6 +11,8 @@ import {Ionicons} from "@expo/vector-icons";
 import { Feather } from '@expo/vector-icons';
 import {postGrocery} from "../FridgeModel/FetchGrocery";
 import {isSpoonFailure} from "../utils";
+import {postRecipe} from "../FridgeModel/FetchRecipe";
+import {orangeColor} from "../constants/Colors";
 
 
 const styles = StyleSheet.create({
@@ -60,58 +62,50 @@ const styles = StyleSheet.create({
 export default function GroceryView(
   props: {
     navigation: any,
-    grocery: SpoonGrocery|undefined,
-    onInput:(newGrocery:SpoonGrocery)=>void,
-    newInstance:boolean,
+    recipe: Recipe|undefined,
+    newInstance: boolean
   }
 ) {
-  const {navigation, grocery, onInput, newInstance} = props;
+  const {navigation, recipe, newInstance} = props;
   const [ImageSource, setImageSource] = useState<string>(emptyImageUri);
-  const [title, setTitle] = useState<string>('Input Your Grocery Name');
-  const [expiration, setExpire] = useState<string>('');
-  const [groceryTags, setTags] = useState<string[]>(['input the tag']);
-  const [serveSize, setServeSize] = useState<SpoonServing>(
-    {number: 0,
-      size: 0,
-      unit: "serving unit"});
+  const [title, setTitle] = useState<string>('Input Your Recipe Name');
+  const [createDate, setCreateDate] = useState<string>('');
+  const [ingredients, setIngredients] = useState<string[]>(['input the ingredients']);
+
   const [countTag, setCountTag] = useState<number>(0);
-  const [upcId, setUpcId] = useState<string>('');
+  const [recipeID, setRecipeId] = useState<string>('');
   const [describe, setDescribe] = useState<string>('Input your description');
 
   const initialGroceryParam= (): void=>{
-     if (grocery?._id){
-       setUpcId(grocery?._id)
+     if (recipe?._id){
+       setRecipeId(recipe?._id)
      }
-     if (grocery?.description){
-       setDescribe(grocery?.description)
+     if (recipe?.description){
+       setDescribe(recipe?.description)
      }
-    if (grocery?.title){
-       setTitle(grocery.title);
-      console.log(grocery.title)
+    if (recipe?.title){
+       setTitle(recipe.title);
+      console.log(recipe.title)
     }
-     if(grocery?.importantBadges){
-        setTags(grocery.importantBadges);
-       console.log("!",groceryTags);
+     if(recipe?.ingredients){
+        setIngredients(recipe.ingredients);
+       console.log("!",ingredients);
      }
 
-    if(grocery?.images){
-       setImageSource(grocery.images[0]);
-      console.log(grocery.images[0])
-    }
-    if(grocery?.servings){
-      setServeSize(grocery.servings);
-      console.log(serveSize)
+    if(recipe?.image){
+       setImageSource(recipe.image);
     }
 
-    if(grocery?.expiration){
-      setExpire(grocery.expiration);
-      console.log(expiration);
+
+    if(recipe?.createDate){
+      setCreateDate(recipe.createDate);
+      console.log(createDate);
     }
   };
 
-  const updateGroceryDB =async()=>{
-    const postResponse = await postGrocery(title, groceryTags, serveSize,
-      expiration, upcId, newInstance, describe);
+  const updateRecipeDB =async()=>{
+    const postResponse = await postRecipe(title, ingredients,
+      createDate, recipeID, newInstance, describe);
     if (isSpoonFailure(postResponse)){
       alert((postResponse as SpoonFailure).message);
     }else{
@@ -161,29 +155,29 @@ export default function GroceryView(
       />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
+      {/*<Text style={styles.inputTag}>*/}
+        {/*{"#Input your upc barcode if empty:"}*/}
+      {/*</Text>*/}
+
+        {/*<Input*/}
+        {/*placeholder = 'Input your creation Time: YYYY-MM-DD'*/}
+        {/*onChangeText={(text)=>setCreateDate(text)}*/}
+        {/*value = {upcId}*/}
+        {/*leftIcon= {<Ionicons name="barcode-outline" size={24} color="gray" />}*/}
+        {/*containerStyle={styles.input}*/}
+        {/*disabled = {!newInstance}*/}
+        {/*/>*/}
+
+
       <Text style={styles.inputTag}>
-        {"#Input your upc barcode if empty:"}
-      </Text>
-
-        <Input
-        placeholder = 'Input your Expiration Time: YYYY-MM-DD'
-        onChangeText={(text)=>setExpire(text)}
-        value = {upcId}
-        leftIcon= {<Ionicons name="barcode-outline" size={24} color="gray" />}
-        containerStyle={styles.input}
-        disabled = {!newInstance}
-        />
-
-
-      <Text style={styles.inputTag}>
-        {"#Input your tag:"}
+        {"#Input your ingredients:"}
       </Text>
       <Tags
         style={{...styles.tag}}
-        initialTags={grocery?.importantBadges===null ? groceryTags : grocery?.importantBadges}
+        initialTags={recipe?.ingredients===null ? ingredients : recipe?.ingredients}
         onChangeTags={tags => {
-          console.log(groceryTags);
-          setTags(tags);
+          console.log(ingredients);
+          setIngredients(tags);
         }}
         onTagPress={(index: number, event: any, deleted: boolean) =>
           console.log(index, event, deleted ? "deleted" : "not deleted")
@@ -193,56 +187,26 @@ export default function GroceryView(
        />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      {/*expiration input*/}
+      {/*createDate input*/}
+      <Text style={styles.inputTag}>
+        {"#Input your created time:"}
+      </Text>
       <Input
-        placeholder = 'Input your Expiration Time: YYYY-MM-DD'
-        onChangeText={setExpire}
-        value={expiration}
+        placeholder = 'Input your create Time: YYYY-MM-DD'
+        onChangeText={setCreateDate}
+        value={createDate}
         leftIcon= {<Ionicons name="md-alarm-outline" size={24} color="gray" />}
         containerStyle={styles.input}
       />
 
-      {/*serving size*/}
-      <Text style={styles.inputTag}>
-        {"Current Serving Size:"}
-      </Text>
-
-      <Input
-        placeholder = 'Number Of Servings Available'
-        value={String(serveSize.number)}
-        onChangeText={(number)=>{
-          setServeSize({...serveSize, number:parseFloat(number)})
-          console.log()
-        }}
-        // leftIcon= {<Ionicons name="ios-alarm-outline" size={24} color="black" />}
-        containerStyle={styles.input}
-      />
-      <Input
-        placeholder = 'Each Serving Size'
-        value ={String(serveSize.size)}
-        onChangeText={(size)=>{
-          setServeSize({...serveSize, size:parseFloat(size)})
-        }}
-        // leftIcon= {<Ionicons name="ios-alarm-outline" size={24} color="black" />}
-        containerStyle={styles.input}
-      />
-      <Input
-        placeholder = 'unit'
-        value ={serveSize.unit}
-        onChangeText={(unit)=> {
-          setServeSize({...serveSize, unit: unit})
-          console.log(groceryTags);
-        }}
-        // leftIcon= {<Ionicons name="ios-alarm-outline" size={24} color="black" />}
-        containerStyle={styles.input}
-      />
 
       {/*submit*/}
       <Button
         icon= {<Feather name="check-circle" size={22} color="white" />}
         title="  Submit this information"
+        buttonStyle={{backgroundColor: orangeColor}}
         onPress ={()=>{
-          updateGroceryDB();
+          updateRecipeDB();
           console.log("Submit!");
         }}
 

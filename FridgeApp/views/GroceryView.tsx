@@ -1,17 +1,18 @@
 import Tags from "react-native-tags";
-import TagInput from 'react-native-tag-input';
 import {Input, Text, Image, Avatar, Button} from 'react-native-elements';
-import {ScrollView, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {SafeAreaViewComponent, ScrollView, StyleSheet, TextInput} from 'react-native';
 import * as React from 'react';
 import { View } from '../components/Themed';
-import {SpoonGrocery, SpoonServing} from "../types";
+import {SpoonFailure, SpoonGrocery, SpoonServing} from "../types";
 import {emptyImageUri} from "../constants/util";
 import {useEffect, useState} from "react";
 import Layout from "../constants/Layout";
 import {Ionicons} from "@expo/vector-icons";
 import { Feather } from '@expo/vector-icons';
 import {postGrocery} from "../FridgeModel/FetchGrocery";
-import {string} from "prop-types";
+import {isSpoonFailure} from "../utils";
+import {orangeColor} from "../constants/Colors";
+
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function GroceryView(
+export default function RecipeView(
   props: {
     navigation: any,
     grocery: SpoonGrocery|undefined,
@@ -68,18 +69,17 @@ export default function GroceryView(
   const {navigation, grocery, onInput, newInstance} = props;
   const [ImageSource, setImageSource] = useState<string>(emptyImageUri);
   const [title, setTitle] = useState<string>('Input Your Grocery Name');
-  const [expiration, setExpire] = useState<string>('Input the expiration time');
+  const [expiration, setExpire] = useState<string>('');
   const [groceryTags, setTags] = useState<string[]>(['input the tag']);
   const [serveSize, setServeSize] = useState<SpoonServing>(
     {number: 0,
       size: 0,
       unit: "serving unit"});
   const [countTag, setCountTag] = useState<number>(0);
-  const [submit, setSubmit] = useState<boolean>(false);
   const [upcId, setUpcId] = useState<string>('');
   const [describe, setDescribe] = useState<string>('Input your description');
 
-   const initialGroceryParam= (): void=>{
+  const initialGroceryParam= (): void=>{
      if (grocery?._id){
        setUpcId(grocery?._id)
      }
@@ -103,20 +103,32 @@ export default function GroceryView(
       setServeSize(grocery.servings);
       console.log(serveSize)
     }
+
+    if(grocery?.expiration){
+      setExpire(grocery.expiration);
+      console.log(expiration);
+    }
   };
+
+  const updateGroceryDB =async()=>{
+    const postResponse = await postGrocery(title, groceryTags, serveSize,
+      expiration, upcId, newInstance, describe);
+    if (isSpoonFailure(postResponse)){
+      alert((postResponse as SpoonFailure).message);
+    }else{
+      alert(postResponse);
+      //TODO: alert should happen after the submit button, not the first time it enters
+    }
+  };
+
   useEffect(()=>{
     initialGroceryParam();
     console.log(countTag)
 
   },[]);
 
-  //this effect use to upload the changed valu
-  useEffect(()=>{
-    const updateGroceryDB =async()=>{
-      await postGrocery(title, groceryTags, serveSize,
-        expiration, upcId, newInstance, describe);
-    }
-  },[submit]);
+
+
 
   return (
     <ScrollView style={{backgroundColor:"white"}}>
@@ -143,18 +155,33 @@ export default function GroceryView(
       <TextInput
         style={styles.text}
         value={describe}
-        onChangeText={(text)=>setTitle(text)}
+        onChangeText={(text)=>setDescribe(text)}
         multiline={true}
         editable={true}
         autoFocus
       />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+      <Text style={styles.inputTag}>
+        {"#Input your upc barcode if empty:"}
+      </Text>
+
+        <Input
+        placeholder = 'Input your upc code if empty'
+        onChangeText={(text)=>setExpire(text)}
+        value = {upcId}
+        leftIcon= {<Ionicons name="barcode-outline" size={24} color="gray" />}
+        containerStyle={styles.input}
+        disabled = {!newInstance}
+        />
+
+
       <Text style={styles.inputTag}>
         {"#Input your tag:"}
       </Text>
       <Tags
         style={{...styles.tag}}
-        initialTags={grocery?.importantBadges}
+        initialTags={grocery?.importantBadges===null ? groceryTags : grocery?.importantBadges}
         onChangeTags={tags => {
           console.log(groceryTags);
           setTags(tags);
@@ -164,13 +191,14 @@ export default function GroceryView(
         }
         containerStyle={{ justifyContent: "center" }}
         inputStyle={{ backgroundColor: "white" }}
-      />
+       />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       {/*expiration input*/}
       <Input
-        placeholder = 'Expiration Time'
+        placeholder = 'Input your Expiration Time: YYYY-MM-DD'
         onChangeText={setExpire}
+        value={expiration}
         leftIcon= {<Ionicons name="md-alarm-outline" size={24} color="gray" />}
         containerStyle={styles.input}
       />
@@ -182,6 +210,7 @@ export default function GroceryView(
 
       <Input
         placeholder = 'Number Of Servings Available'
+        value={String(serveSize.number)}
         onChangeText={(number)=>{
           setServeSize({...serveSize, number:parseFloat(number)})
           console.log()
@@ -191,6 +220,7 @@ export default function GroceryView(
       />
       <Input
         placeholder = 'Each Serving Size'
+        value ={String(serveSize.size)}
         onChangeText={(size)=>{
           setServeSize({...serveSize, size:parseFloat(size)})
         }}
@@ -199,6 +229,7 @@ export default function GroceryView(
       />
       <Input
         placeholder = 'unit'
+        value ={serveSize.unit}
         onChangeText={(unit)=> {
           setServeSize({...serveSize, unit: unit})
           console.log(groceryTags);
@@ -211,7 +242,11 @@ export default function GroceryView(
       <Button
         icon= {<Feather name="check-circle" size={22} color="white" />}
         title="  Submit this information"
-        onPress ={()=>{setSubmit(true)}}
+        buttonStyle={{backgroundColor: orangeColor}}
+        onPress ={()=>{
+          updateGroceryDB();
+          console.log("Submit!");
+        }}
 
       />
 

@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import { ListItem, Avatar, } from 'react-native-elements';
+import {ListItem, Avatar, SearchBar,} from 'react-native-elements';
 import { View } from '../components/Themed';
 import {Recipe, SpoonRecipe} from "../types";
+import {useState} from "react";
+import {string} from "prop-types";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,10 +30,21 @@ export default function FridgeListView(
   },
 ) {
   const { navigation, recipes } = props;
+  const [search, setSearch] = useState<string>('');
   return (
     <View style={{ ...styles.container, width: '100%' }}>
       {console.log("INTO Recipe VIEW")}
 
+      <SearchBar
+        inputStyle={{backgroundColor: 'white'}}
+        inputContainerStyle={{backgroundColor: 'white'}}
+        containerStyle={{backgroundColor: 'white'}}
+        onChangeText={(text)=>{setSearch(text)}}
+        value={search}
+        placeholder={"search recipe here"}
+        lighttheme={true}
+        platform={"ios"}
+      />
 
       <ScrollView style={{ width: '100%' }}>
         {
@@ -39,11 +52,11 @@ export default function FridgeListView(
             ? recipes.map((recipe, index) =>
               (
                 <ListItem
-                  // button
-                  // onPress={() => {
-                  //   console.log(`click on ${recipe._id}`);
-                  //   navigation.navigate('GroceryScreen', { recipe: recipe, newInstance:false});
-                  // }}
+                  button
+                  onPress={() => {
+                    console.log(`click on ${recipe._id}`);
+                    navigation.navigate('RecipeScreen', { recipe: recipe, newInstance: false});
+                  }}
                   key={`i${JSON.stringify(index)}`}
                   bottomDivider
                 >
@@ -52,7 +65,7 @@ export default function FridgeListView(
                     <ListItem.Title>{recipe.title}</ListItem.Title>
                     {recipe.title ? (
                         <ListItem.Subtitle>
-                          {`expire: ${recipe.createDate}`}
+                          {`created at: ${recipe.createDate}`}
                         </ListItem.Subtitle>
                       )
                       : null}

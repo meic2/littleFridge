@@ -79,7 +79,7 @@ def check_required_field_recipe(instance):
     """
     if "_id" not in instance:
         return False
-    if "recipe_name" not in instance:
+    if "title" not in instance:
         return False
     return True
 

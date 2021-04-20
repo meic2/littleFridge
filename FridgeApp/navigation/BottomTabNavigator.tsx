@@ -1,15 +1,16 @@
-import { Ionicons } from '@expo/vector-icons';
+import {Ionicons, MaterialIcons} from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
+import Colors, {orangeColor} from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import ScannerScreen from "../screens/ScannerScreen";
 import GroceryScreen from "../screens/GroceryScreen";
+import RecipeScreen from "../screens/RecipeScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -19,7 +20,7 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Fridge"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: orangeColor }}>
       <BottomTab.Screen
         name="Fridge"
         component={TabOneNavigator}
@@ -28,10 +29,10 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Recipe"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="set-meal" size={24} color="black" />,
         }}
       />
     </BottomTab.Navigator>
@@ -55,10 +56,24 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Fridge' }}
+        options={
+          { headerTitle: 'Fridge',
+            headerStyle: {
+              backgroundColor: orangeColor,
+            }
+          }
+        }
+
       />
       <TabOneStack.Screen name="BarCodeScanner" component={ScannerScreen} />
-      <TabOneStack.Screen name={"GroceryScreen"} component={GroceryScreen}/>
+      <TabOneStack.Screen
+        name="GroceryScreen"
+        component={GroceryScreen}
+        options={{
+          headerTitle: 'Grocery',
+          headerStyle: {
+            backgroundColor: orangeColor,
+          }}}/>
     </TabOneStack.Navigator>
   );
 }
@@ -72,7 +87,16 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{
+          headerTitle: 'Recipe Memo',
+          headerStyle: {
+            backgroundColor: orangeColor,
+          }}}
+      />
+      <TabTwoStack.Screen
+        name="RecipeScreen"
+        component={RecipeScreen}
+        options={{ headerTitle: 'Recipe' }}
       />
     </TabTwoStack.Navigator>
   );

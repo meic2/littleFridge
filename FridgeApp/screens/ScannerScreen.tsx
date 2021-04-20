@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet, Button, Route} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import {FunctionPassingParamList} from "../types";
+import {FunctionPassingParamList, SpoonFailure} from "../types";
+import {searchGroceryByUPC} from "../FridgeModel/SpoonHelper";
+import {isSpoonFailure, isSpoonGrocery} from "../utils";
+import {putGrocery} from "../FridgeModel/FetchGrocery";
 
 
 
@@ -31,10 +34,24 @@ export default (
     })();
   }, []);
 
-  const handleScanned =(code:string)=>{
-    route.params.onScanned(code);
-  //TODO: navigate back to TabOneScreen
-  };
+
+  async function fetchNewGrocery(upcCode:string) {
+    const newGrocery = await searchGroceryByUPC(upcCode);
+    console.log("NEW GROCERY!!!");
+    if (isSpoonFailure(newGrocery)){
+      console.log(newGrocery);
+      alert(newGrocery.message);
+      if(newGrocery.status === "failure") {
+        navigation.navigate('GroceryScreen', {grocery: undefined, newInstance: true});
+        //TODO: further checking if everything works in navigation
+      }
+    }else if(isSpoonGrocery(newGrocery)){
+      //TODO: navgiate to page with auto-filled ingredient page
+      //TODO: right now hard-code expiration date only to see dynamically update (change in SpoonHelper/groceryParser)
+      console.log("NEW GROCERY INPUT SUCCESS!!!");
+      navigation.navigate('GroceryScreen', { grocery: newGrocery, newInstance:true});
+    }
+  }
 
   const handleBarCodeScanned = ({type, data}:{type: string, data:string}) => {
     setScanned(true);
@@ -42,11 +59,13 @@ export default (
     if (data.length ===13){
       //TODO: Only recognize if the EAN based on USA/CANADA, expo barcode only recognize EAN13 but not UPC-A
       // here is a hard-code version to convert EAN to UPC-A, under product mainly from USA scenario
-
       //TODO: convert UPC-E to UPC-A for spoonacular API
       data = data.substr(1);
+      fetchNewGrocery(data);
     }
-    handleScanned(data);
+    else{
+      alert("not the correct form of the upc bar code!");
+    }
   };
 
   if (hasPermission === null) {

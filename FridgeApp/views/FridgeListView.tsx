@@ -6,9 +6,9 @@ import {SpoonGrocery} from "../types";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width:'100%',
+    flexGrow: 1,
+    // alignItems: 'center'
   },
   title: {
     fontSize: 20,
@@ -29,9 +29,8 @@ export default function FridgeListView(
 ) {
   const { navigation, groceries } = props;
   return (
-    <View style={{ ...styles.container, width: '100%' }}>
-      {console.log("INTO FRIDGE VIEW!!!!!!!!!!!!!!!!!!!!!!!!")}
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {console.log("INTO FRIDGE VIEW!!!!!!!!!!!!!!!!!!!!!!!!")}
         {
           groceries
           ? groceries.map((grocery, index) =>
@@ -40,7 +39,7 @@ export default function FridgeListView(
                 button
                 onPress={() => {
                   console.log(`click on ${grocery._id}`);
-                  navigation.navigate('GroceryScreen', { grocery: grocery});
+                  navigation.navigate('GroceryScreen', { grocery: grocery, newInstance:false});
                 }}
                 key={`i${JSON.stringify(index)}`}
                 bottomDivider
@@ -59,6 +58,5 @@ export default function FridgeListView(
             )) : null}
       </ScrollView>
 
-    </View>
   );
 }

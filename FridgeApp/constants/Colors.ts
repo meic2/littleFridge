@@ -17,3 +17,6 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const orangeColor:string ='rgb(248, 165, 52)';
+

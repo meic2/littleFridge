@@ -106,7 +106,7 @@ def test_delete_grocery_info(client):
 
 def test_put_recipe_info(client):
     instance = {"_id": 124,
-                "recipe_name": "beef slice",
+                "title": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
                 }
@@ -127,7 +127,7 @@ def test_put_recipe_info_wrong(client):
 
 def test_post_recipe_info(client):
     instance = {"_id": 124,
-                "recipe_name": "beef slice",
+                "title": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
                 }
@@ -138,7 +138,7 @@ def test_post_recipe_info(client):
 
 def test_post_grocery_recipe_wrong(client):
     instance = {"_id": 124,
-                "recipe_name": "beef slice",
+                "title": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
                 }
@@ -149,7 +149,7 @@ def test_post_grocery_recipe_wrong(client):
 
 def test_post_grocery_recipe_cannot_found(client):
     instance = {"_id": 124,
-                "recipe_name": "beef slice",
+                "title": "beef slice",
                 "spoon_id": 124,
                 "ingredients": []
                 }

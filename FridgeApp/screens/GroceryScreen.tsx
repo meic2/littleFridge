@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function TabTwoScreen(
+export default function GroceryScreen(
   props: {
     navigation:any,
     route: Route, //grocery
@@ -34,10 +34,12 @@ export default function TabTwoScreen(
 ) {
   const [load, setLoad] = useState<boolean>(true);
   const {navigation, route} = props;
-  const [groceryItem, setGrocery] = useState<SpoonGrocery|undefined>(route.params.grocery);
+  const [groceryItem, setGrocery,] = useState<SpoonGrocery|undefined>(route.params.grocery);
+
+//TODO: use upcCOde as prop for groceryScreen
   useEffect(()=>{
     setLoad(false);
-  },[route.params.grocery, load]);
+  },[load]);
 
   function onInput(newGrocery:SpoonGrocery){
     console.log("onInput!");
@@ -45,7 +47,11 @@ export default function TabTwoScreen(
   }
   return (
     <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
-    <GroceryView navigation={navigation} grocery={groceryItem} onInput={onInput}/>
+    <GroceryView
+      navigation={navigation}
+      grocery={groceryItem}
+      onInput={onInput}
+      newInstance={route.params.newInstance}/>
     </View>
   );
 }
