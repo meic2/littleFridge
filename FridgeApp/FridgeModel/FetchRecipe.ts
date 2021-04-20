@@ -94,55 +94,53 @@ export async function putRecipe(recipe:Recipe|undefined):Promise<string|undefine
 }
 
 /**
- * can submit undefined attributes: if so, there is nothing change in the database(good).
+ *
  * @param title
- * @param importantBadges
- * @param servings
- * @param expiration
- * @param _id: the upc id to distinguish the input
+ * @param ingredients
+ * @param createdDate
+ * @param _id
  * @param newInstance
  * @param description
  */
-export async function postGrocery(
-  title:string, importantBadges:string[]|undefined, servings:SpoonServing|undefined,
-  expiration:string, _id:string,  newInstance:boolean, description:string|undefined){
-  // const expireResponse:SpoonFailure = dateFormate(expiration);
-  // if (expireResponse.status!== "200"){
-  //   return expireResponse;
-  // }
-  // const newGroceryInstance:SpoonGrocery={
-  //   title:title,
-  //   spoon_id:-1, //indicating this is irrelevant to the spoondatabase
-  //   importantBadges:importantBadges,
-  //   servings:servings,
-  //   expiration:expiration,
-  //   description:description
-  // };
-  // if (newInstance===true){
-  //   //make sure that the upcID is set in the new instance
-  //   newGroceryInstance["_id"] = _id;
-  //   return await putGrocery(newGroceryInstance);
-  // }
-  // //here we are going to update existing grocery.
-  // const urlSuffix = `/grocery?grocery_id=${_id}`;
-  // const url = FLASK_BASE_URL+ urlSuffix;
-  //
-  // const response = await fetch(url, {
-  //   method: 'POST',
-  //   headers: JSON_HEADER,
-  //   body:JSON.stringify(newGroceryInstance),
-  // }).then(r => {
-  //   return r.text();
-  // })
-  //   .catch((error) => {
-  //     //should less happened
-  //     console.log('Error: ', error);
-  //     return {status:'500', message:error};
-  //     //TODO: should not happened: check for not exist in the library
-  //   });
-  // // console.log(groceryList._id);
-  // console.log(response);
-  // return response;
+export async function postRecipe(
+  title:string, ingredients:string[]|undefined,
+  createdDate:string, _id:string, newInstance: boolean, description:string|undefined){
+  const expireResponse:SpoonFailure = dateFormate(createdDate);
+  if (expireResponse.status!== "200"){
+    return expireResponse;
+  }
+  const newRecipe:Recipe={
+    title:title,
+    spoon_id:-1, //indicating this is irrelevant to the spoondatabase
+    ingredients:ingredients,
+    createDate:createdDate,
+    description:description
+  };
+  if (newInstance===true){
+    //make sure that the upcID is set in the new instance
+    newRecipe["_id"] = _id;
+    return await putRecipe(newRecipe);
+  }
+  //here we are going to update existing grocery.
+  const urlSuffix = `/recipe?recipe_id=${_id}`;
+  const url = FLASK_BASE_URL+ urlSuffix;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: JSON_HEADER,
+    body:JSON.stringify(newRecipe),
+  }).then(r => {
+    return r.text();
+  })
+    .catch((error) => {
+      //should less happened
+      console.log('Error: ', error);
+      return {status:'500', message:error};
+      //TODO: should not happened: check for not exist in the library
+    });
+  // console.log(groceryList._id);
+  console.log(response);
+  return response;
 }
 
 
