@@ -151,7 +151,8 @@ const tempjson:Recipe = {
     'testing description',
   ingredients:["milk", "egg", "material for testing"],
   image: "https://spoonacular.com/recipeImages/716429-556x370.jpg",
-  createDate:'2021-09-09'
+  createDate:'2021-09-09',
+  spoon_id:-1
   };
 
 
