@@ -10,4 +10,4 @@ export const SPOON_APIKEY = {
 const LOCAL_IP_ADDRESS = '172.20.10.2'; //use for iphone testing
 const LOCAL_HOST = '127.0.0.1';
 const PHONE_IP_ADDRESS='169.254.117.146';
-export const FLASK_BASE_URL = 'http://'+LOCAL_HOST+':5000';
+export const FLASK_BASE_URL = 'http://'+LOCAL_IP_ADDRESS+':5000';
