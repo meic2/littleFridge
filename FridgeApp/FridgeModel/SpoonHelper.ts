@@ -1,9 +1,9 @@
-import {BASE_URL_SPOON, SPOON_APIKEY} from './env'
+import {BASE_URL_SPOON, SPOON_APIKEY, RECIPE_FIND_BY_INGRE} from './env'
 import {SpoonGrocery, SpoonFailure,} from '../types'
 import "isomorphic-fetch"
 import {isSpoonFailure, isSpoonGrocery} from "../utils";
 
-const API_SUFFIX = `apiKey=${encodeURIComponent(SPOON_APIKEY.apiKey)}`
+const API_SUFFIX = `apiKey=${encodeURIComponent(SPOON_APIKEY.apiKey)}`;
 
 const JSON_HEADER = {
     "Content-Type": "application/json"
@@ -76,6 +76,54 @@ export async function searchGroceryByUPC(upcInput:string|undefined, usrName:stri
     }
 }
 
+
+/**
+ *
+ * @param ingreList
+ * @param number
+ */
+async function fetchRecipeByIngredients(ingreList:string[], number:number) {
+
+    const urlSuffix = `?ranking=1&number=${number}&ingredients=${constructIngredientParam(ingreList)}&`;
+    const urlRecipe = RECIPE_FIND_BY_INGRE + urlSuffix + API_SUFFIX;
+    console.log(urlRecipe);
+    const response = await fetch(urlRecipe, {
+        method: 'GET',
+        headers: JSON_HEADER,
+    }).then(r => r.json())
+      .catch((error) => {
+          //should less happened
+          console.log('Error: ', error.toString());
+          return undefined;
+      });
+    return response;
+}
+
+function constructIngredientParam(ingreList:string[]) {
+    let query = '';
+    for (let i:number =0; i < ingreList.length; i+= 1) {
+        const ingredient = ingreList[i];
+        query += ingredient;
+        query += ",+";``
+    }
+    return query.substring(0, -2);
+}
+
+export async function searchRecipeByIngredients(ingreList:string[], number:number = 5) {
+    // const response = await fetchRecipeByIngredients(ingreList, number);
+    // if (response == undefined){
+    //     return undefined;
+    // }else if (isSpoonFailure(response)){
+    //     console.log(response);
+    //     return response;
+    // }else{
+    //     console.log("new instance!");
+    //     console.log(response);
+    //     return groceryParser((response as SpoonGrocery), upcInput, usrName);
+    // }
+}
+
 // const rightUPC = '049000028911';
 // const wrongUPC = '123';
 // searchGroceryByUPC(rightUPC);
+// fetchRecipeByIngredients(["apple"], 5);

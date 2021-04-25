@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
+import { Button } from 'react-native-elements';
 import { Text, View } from '../components/Themed';
-
-export default function TabTwoScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
-  );
-}
+import {useEffect, useState} from "react";
+import {Recipe, SpoonFailure} from "../types";
+import {getAllRecipe, putRecipe} from "../FridgeModel/FetchRecipe";
+import {isSpoonFailure, isSpoonGrocery} from "../utils";
+import LoadingView from "../views/LoadingView";
+import RecipeMemoView from "../views/RecipeMemoView";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,3 +25,41 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+export default function TabOneScreen({navigation}) {
+
+  const [recipes, setRecipes] = useState<Recipe[]|undefined>(undefined);
+  const [load, setLoad] = useState<boolean>(true);
+
+  useEffect(()=>{
+    async function fetchGroceryList(){
+      const recipeList = await getAllRecipe();
+      // console.log("useEffect TaboneScreen line 38", groceryList);
+      setRecipes(recipeList);
+    }
+
+    function refreshNavigation (){
+      navigation.addListener('focus', async () => {
+        console.log("refresh navigation, setload = false");
+        setLoad(true);
+        await fetchGroceryList();
+        setLoad(false);
+        console.log("the load value now is ", load);
+      });
+    }
+
+    refreshNavigation();
+  }, [navigation]);
+
+  return (
+    <View style={styles.container}>
+      {load ? <LoadingView />
+        :
+        <RecipeMemoView
+          navigation={navigation}
+          recipes={recipes}
+        />
+      }
+    </View>
+  );
+}

@@ -37,7 +37,7 @@ There are two parts of the project:
               |__ TabOneScreen.tsx
               |__ ScannerScreen.tsx
            |__ views
-              |__ FridgeView.tsx
+              |__ FridgeListView.tsx.tsx
            |__ navigation       
            |__ __test__
            
@@ -131,7 +131,7 @@ The overall logic of the App:
 
 
 ### Fridge View
-here you can see that the FridgeView is has two parts. 
+here you can see that the FridgeListView is has two parts. 
 
 ![alt text](manualTest_ref/FridgeView_before.PNG "")
 

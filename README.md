@@ -14,18 +14,29 @@ There are two parts of the project:
 
 `FridegApp` responsible for front-end construction for IOS app, with Model(`FridgeModel`)-Controller(`screens`)-View(`views`) being separated.
 
+![a small demo of the app front end](manualTest_ref/FridgeView_beforeScan.png "")
+
+
 `LittleFridge` responsible for back-end API construction, and the main implementation is to construct a local database with itself. 
 
     __ root directory
         |__ FridgeApp
            |__ FridgeModel
               |__ FetchGrocery.ts
+              |__ FetchRecipe.ts
               |__ SpoonHelper.ts   
            |__ screens
               |__ TabOneScreen.tsx
               |__ ScannerScreen.tsx
+              |__ TabTwoScreen.tsx
+              |__ RecipeScreen.tsx
            |__ views
-              |__ FridgeView.tsx
+              |__ FridgeListView.tsx
+              |__ FridgeOverallView.tsx
+              |__ GroceryView.tsx
+              |__ LoadingView.tsx
+              |__ RecipeView.tsx
+              |__ RecipeMemoView.tsx
            |__ navigation       
            |__ __test__
            
