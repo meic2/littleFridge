@@ -146,27 +146,13 @@ export async function postGrocery(
 }
 
 
-const tempjson:SpoonGrocery = {
-  title: 'testing',
-  importantBadges: [ 'no_preservatives', 'gluten_free', 'nut_free' ],
-  serving_size: '2.0 gummies',
-  number_of_servings: 25,
-  servings: { number: 25, size: 2, unit: 'gummies' },
-  description:
-    'testing description',
-  generatedText: null,
-  upc: '0123',
-  images:
-    [ 'https://spoonacular.com/productImages/409329-312x231.jpg',
-      'https://spoonacular.com/productImages/409329-90x90.jpg' ],
-  imageType: 'jpg',
-  _id: '0123',
-  expiration:'2021-09-09'
-  };
 
 
-// const response = putGrocery(tempjson);
+
+// const response = putGrocery(tempGroceryjson);
 // const response = getGrocery( '030768535032');
 // getAllGrocery();
-const response = postGrocery( 'Diet Coke', ['update'], undefined, '12-09-09', '0123',false,'test' );
+const response = postGrocery( 'Diet Coke',
+  ['update'], undefined,
+  '12-09-09', '0123',false,'test' );
 

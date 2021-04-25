@@ -2,6 +2,7 @@ import {FLASK_BASE_URL} from "./env";
 import {Recipe, SpoonFailure, SpoonGrocery, SpoonServing} from "../types";
 import "isomorphic-fetch"
 import {dateFormate, isRecipe, isSpoonGrocery} from "../utils";
+import {tempRecipeJson} from "../dataTesting";
 
 
 const JSON_HEADER = {
@@ -144,19 +145,8 @@ export async function postRecipe(
 }
 
 
-const tempjson:Recipe = {
-  _id:'testing',
-  title: 'testing',
-  description:
-    'testing description',
-  ingredients:["milk", "egg", "material for testing"],
-  image: "https://spoonacular.com/recipeImages/716429-556x370.jpg",
-  createDate:'2021-09-09',
-  spoon_id:-1
-  };
-
 
 // const response = putGrocery(tempjson);
 // const response = getGrocery( '030768535032');
 // getAllGrocery();
-const response = putRecipe(tempjson);
+const response = putRecipe(tempRecipeJson);
