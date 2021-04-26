@@ -20,6 +20,7 @@ spoon_id: number, should autogerante when user input; else is none.
 extendedIngredients: list, (named from spoonAPI)
 }
 """
+import re
 from flask import abort
 from bson.json_util import dumps
 from bson.json_util import loads
@@ -54,15 +55,32 @@ def get_db(collection_name, food_id):
     return food
 
 
-def get_all_db(collection_name):
+def query_helper(query):
+    """
+    We only assume there are only one filtering condition now
+    """
+    request_arr = query.split(":");
+    return request_arr;
+
+
+def get_all_db(collection_name, query):
     """
     get all the entries of the collection
     :param collection_name: grocery or recipe
+    :param query "in the format of `query='title=abc'`"
     :return: abnormal response or the all instance get in string format
     """
     assert collection_name in COLLECTION_LIST
     collection = database[collection_name]
-    foods = list(collection.find({}))
+
+    
+    attr, value = query_helper(query)
+    if value == '':
+        foods = list(collection.find({}))
+    else:
+        regx = re.compile(".*"+re.escape(value)+ ".*", re.IGNORECASE)
+        foods = list(collection.find({attr: regx}))
+    print(foods)
     return dumps(foods)
 
 

@@ -6,7 +6,7 @@ import {Text, View} from '../components/Themed';
 import {SpoonGrocery} from "../types";
 import FridgeListView from "./FridgeListView";
 import {useState} from "react";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -39,29 +39,7 @@ export default function FridgeOverallView(
 
   return (
     <View >
-      <View  style={{flexDirection: 'row', padding:10}}>
-        <SearchBar
-          inputStyle={{backgroundColor: orangeColor}}
-          inputContainerStyle={{backgroundColor: "white"}}
-          containerStyle={{backgroundColor: "white", flex:1,height:40, paddingRight:10}}
-          onChangeText={(text)=>{setSearch(text)}}
-          value={search}
-          placeholder={"search grocery here"}
-          lighttheme={true}
-          platform={"ios"}
-        />
 
-        <Icon.Button
-          style={{height:40}}
-          name="barcode-scan"
-          backgroundColor={'rgb(248, 165, 52)'}
-          onPress={()=>{navigation.push('BarCodeScanner')}}
-        >
-         scan
-        </Icon.Button>
-
-      </View>
-      
        <FridgeListView
         navigation={navigation}
         groceries={groceries}

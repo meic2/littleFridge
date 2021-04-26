@@ -39,8 +39,8 @@ export async function getRecipe(recipeId:string):Promise<undefined|Recipe> {
  * async function to fetch all the content from the recipe database.
  * @return message returned by the Spoon API. If didn't find anything, will return empty list from the db method.
  */
-export async function getAllRecipe():Promise<undefined|Recipe[]> {
-  const urlSuffix = `/recipe?recipe_id=all`;
+export async function getAllRecipe(filter:string=''):Promise<undefined|Recipe[]> {
+  const urlSuffix = `/recipe?recipe_id=all&filter=title:${filter}`;
   const url = FLASK_BASE_URL+ urlSuffix;
   console.log(url);
   const response = await fetch(url, {

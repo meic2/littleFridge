@@ -2,9 +2,8 @@ import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {ListItem, Avatar, SearchBar,} from 'react-native-elements';
 import { View } from '../components/Themed';
-import {Recipe, SpoonRecipe} from "../types";
-import {useState} from "react";
-import {string} from "prop-types";
+import {Recipe, SpoonRecipe, SpoonRecipeSearch} from "../types";
+import {useEffect, useState} from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function FridgeListView(
+export default function RecipeSearchView(
   props: {
     navigation: any,
     recipes: Recipe[] | undefined
@@ -33,13 +32,14 @@ export default function FridgeListView(
 
   return (
     <View >
-      {console.log("INTO Recipe VIEW")}
+      {/*{console.log("INTO Recipe VIEW")}*/}
 
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView >
         {
           recipes
             ? recipes.map((recipe, index) =>
               (
+
                 <ListItem
                   button
                   onPress={() => {
@@ -49,7 +49,7 @@ export default function FridgeListView(
                   key={`i${JSON.stringify(index)}`}
                   bottomDivider
                 >
-                  {console.log(recipe)}
+                  {console.log(index)}
                   {recipe.image ? <Avatar source={{ uri: recipe?.image }} /> : null}
                   <ListItem.Content>
                     <ListItem.Title>{recipe.title}</ListItem.Title>

@@ -7,10 +7,11 @@ import Colors, {orangeColor} from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import {BottomTabParamList, TabOneParamList, TabThreeParamList, TabTwoParamList} from '../types';
 import ScannerScreen from "../screens/ScannerScreen";
 import GroceryScreen from "../screens/GroceryScreen";
 import RecipeScreen from "../screens/RecipeScreen";
+import TabThreeScreen from "../screens/TabThreeScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -25,25 +26,27 @@ export default function BottomTabNavigator() {
         name="Fridge"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="fridge" size={24} color="black" />,
+          tabBarIcon: () => <MaterialCommunityIcons name="fridge" size={24} color="black" />,
         }}
       />
       <BottomTab.Screen
         name="Recipe"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="set-meal" size={24} color="black" />,
+          tabBarIcon: () => <MaterialIcons name="set-meal" size={24} color="black" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="RecipeSearch"
+        component={TabThreeNavigator}
+        options={{
+          tabBarIcon: () => <MaterialCommunityIcons name="book-search-outline" size={24} color="black" />,
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
-}
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
@@ -99,5 +102,28 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Recipe' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
+
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator>
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={TabThreeScreen}
+        options={{
+          headerTitle: 'Recipe Online',
+          headerStyle: {
+            backgroundColor: orangeColor,
+          }}}
+      />
+      <TabThreeStack.Screen
+        name="RecipeScreen"
+        component={RecipeScreen}
+        options={{ headerTitle: 'Recipe' }}
+      />
+    </TabThreeStack.Navigator>
   );
 }

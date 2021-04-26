@@ -33,7 +33,8 @@ def get_grocery_info():
         return delete_grocery(grocery_id)
     # get: all or single id
     if grocery_id == "all":
-        return db.get_all_db("grocery");
+        query = (request.args['filter'])
+        return db.get_all_db("grocery", query);
     return db.get_db("grocery", grocery_id)
 
 

@@ -7,6 +7,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   Fridge: undefined;
   Recipe: undefined;
+  RecipeSearch: undefined;
 };
 
 export type GroceryParamList ={
@@ -24,6 +25,10 @@ export type TabTwoParamList = {
   RecipeScreen: RecipeParamList
 };
 
+export type TabThreeParamList = {
+  TabThreeScreen: undefined;
+  RecipeScreen: RecipeParamList
+};
 export type RecipeParamList ={
   Recipe: Recipe;
 }
@@ -93,13 +98,11 @@ export type SpoonFailure = {
   message: string
 }
 
-export type SpoonRecipeByIngredients = {
+export type SpoonRecipeSearch = {
   "id": number,
+  "title": string,
   "image": string,
   "imageType": string,
-  "likes": number,
-  "missedIngredientCount": number,
-  "missedIngredients": spoonIngredients[],
 }
 
 export type SpoonRecipe = {

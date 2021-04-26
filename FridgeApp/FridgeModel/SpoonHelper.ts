@@ -1,5 +1,5 @@
-import {BASE_URL_SPOON, SPOON_APIKEY, RECIPE_FIND_BY_INGRE} from './env'
-import {SpoonGrocery, SpoonFailure,} from '../types'
+import {BASE_URL_SPOON, SPOON_APIKEY, RECIPE_FIND_BY_INGRE, SEARCH_RECIPE_COMPLEX, GET_RECIPE_INFO} from './env'
+import {SpoonGrocery, SpoonFailure, SpoonRecipeSearch, SpoonRecipe, Recipe,} from '../types'
 import "isomorphic-fetch"
 import {isSpoonFailure, isSpoonGrocery} from "../utils";
 
@@ -109,21 +109,73 @@ function constructIngredientParam(ingreList:string[]) {
     return query.substring(0, -2);
 }
 
-export async function searchRecipeByIngredients(ingreList:string[], number:number = 5) {
-    // const response = await fetchRecipeByIngredients(ingreList, number);
-    // if (response == undefined){
-    //     return undefined;
-    // }else if (isSpoonFailure(response)){
-    //     console.log(response);
-    //     return response;
-    // }else{
-    //     console.log("new instance!");
-    //     console.log(response);
-    //     return groceryParser((response as SpoonGrocery), upcInput, usrName);
-    // }
+
+function recipeParser(spoonRecipe:SpoonRecipe):Recipe{
+
+    const ingreList:string[] = spoonRecipe.extendedIngredients.map((spoonIngre, idx)=>{return spoonIngre.name});
+    const RecipeInstance:Recipe = {
+        _id: spoonRecipe.title,
+        image: spoonRecipe.image,
+        title: spoonRecipe.title,
+        spoon_id:spoonRecipe.id,
+        description:spoonRecipe.instructions,
+        createDate:"",
+        ingredients:ingreList
+    };
+    console.log(RecipeInstance);
+    return RecipeInstance;
+}
+
+export async function fetchRecipeByID(recipeID:string): Promise<Recipe|undefined>{
+    const url = GET_RECIPE_INFO +`/${recipeID}/information?` + API_SUFFIX;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: JSON_HEADER,
+    }).then(r => r.json())
+      .catch((error) => {
+          //should less happened
+          console.log('Error: ', error.toString());
+          return undefined;
+      });
+    if (response==undefined){
+        return undefined;
+    }else{
+        return recipeParser(response);
+    }
+
+}
+
+
+/**
+ *
+ * @param number
+ * @param sort popularity, healthiness,
+ * @param query
+ * @param sortDirection asc or desc
+ * @param maxCalories
+ */
+export async function getRecipeComplexSearch(query:string = "", number:number = 5, sort:string = 'random', sortDirection:string = 'asc', maxCalories:number = -1):Promise<SpoonRecipeSearch[]> {
+    let urlSuffix = `?query=${query}&number=${number}&sortDirection=${sortDirection}&sort=${sort}&`;
+    if (maxCalories > 0) {
+        urlSuffix += `maxCalories=${maxCalories}&`
+    }
+    const urlRecipeComplex = SEARCH_RECIPE_COMPLEX + urlSuffix + API_SUFFIX;
+    console.log(urlRecipeComplex);
+    const response = await fetch(urlRecipeComplex, {
+        method: 'GET',
+        headers: JSON_HEADER,
+    }).then(r => r.json())
+      .catch((error) => {
+          //should less happened
+          console.log('Error: ', error.toString());
+          return undefined;
+      });
+    console.log(response.results[0]);
+    return response.results;
 }
 
 // const rightUPC = '049000028911';
 // const wrongUPC = '123';
-// searchGroceryByUPC(rightUPC);
-// fetchRecipeByIngredients(["apple"], 5);
+// const q = getRecipeComplexSearch();
+
+fetchRecipeByID("693161");

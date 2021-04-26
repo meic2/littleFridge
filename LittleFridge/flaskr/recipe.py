@@ -33,7 +33,8 @@ def get_recipe_info():
     # get: all or single id
 
     if recipe_id == "all":
-        return db.get_all_db("recipe")
+        query = (request.args['filter'])
+        return db.get_all_db("recipe", query);
     return db.get_db("recipe", recipe_id)
 
 

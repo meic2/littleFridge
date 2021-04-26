@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import {Button, SearchBar} from 'react-native-elements';
 import { Text, View } from '../components/Themed';
 import {useEffect, useState} from "react";
 import {Recipe, SpoonFailure} from "../types";
 import {getAllRecipe, putRecipe} from "../FridgeModel/FetchRecipe";
-import {isSpoonFailure, isSpoonGrocery} from "../utils";
+import { useFocusEffect } from '@react-navigation/native';
 import LoadingView from "../views/LoadingView";
 import RecipeMemoView from "../views/RecipeMemoView";
+import {getAllGrocery} from "../FridgeModel/FetchGrocery";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,35 +31,62 @@ export default function TabOneScreen({navigation}) {
 
   const [recipes, setRecipes] = useState<Recipe[]|undefined>(undefined);
   const [load, setLoad] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>('');
 
-  useEffect(()=>{
-    async function fetchGroceryList(){
-      const recipeList = await getAllRecipe();
-      // console.log("useEffect TaboneScreen line 38", groceryList);
-      setRecipes(recipeList);
+  useFocusEffect(
+    React.useCallback(() => {
+      let isActive = true;
+      setLoad(true);
+      async function fetchGroceryList(usrInput:string=''){
+        try {
+          const recipeList = await getAllRecipe(usrInput);
+          if (isActive) {
+            setRecipes(recipeList);
+            setLoad(false);
+          }
+          console.log("useEffect Tab2Screen line 38", recipes);
+        }catch (e) {
+          //error:
+        }
+      }
+      fetchGroceryList();
+      return () => {
+        isActive = false;
+      };
+
+    }, []));
+
+  useEffect(  ()=>{
+    try {
+      getAllRecipe(search).then(recipeList=>setRecipes(recipeList));
+      console.log("useEffect Tab1Screen line 83",);
+    } catch (e) {
+      //error:
     }
+  },[search]);
 
-    function refreshNavigation (){
-      navigation.addListener('focus', async () => {
-        console.log("refresh navigation, setload = false");
-        setLoad(true);
-        await fetchGroceryList();
-        setLoad(false);
-        console.log("the load value now is ", load);
-      });
-    }
-
-    refreshNavigation();
-  }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <View >
       {load ? <LoadingView />
         :
+        <View >
+          <SearchBar
+            inputStyle={{backgroundColor: 'white'}}
+            inputContainerStyle={{backgroundColor: 'white'}}
+            containerStyle={{backgroundColor: 'white'}}
+            onChangeText={(text)=>{setSearch(text)}}
+            value={search}
+            placeholder={"search recipe here"}
+            lighttheme={true}
+            platform={"ios"}
+          />
+
         <RecipeMemoView
           navigation={navigation}
           recipes={recipes}
         />
+        </View>
       }
     </View>
   );

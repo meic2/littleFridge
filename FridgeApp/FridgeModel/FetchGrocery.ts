@@ -38,8 +38,8 @@ export async function getGrocery(upcId:string):Promise<undefined|SpoonGrocery> {
  * async function to fetch all the content from the spoonacular.
  * @return message returned by the Spoon API. If didn't find anything, will return empty list from the db method.
  */
-export async function getAllGrocery():Promise<undefined|SpoonGrocery[]> {
-  const urlSuffix = `/grocery?grocery_id=all`;
+export async function getAllGrocery(filter:string=''):Promise<undefined|SpoonGrocery[]> {
+  const urlSuffix = `/grocery?grocery_id=all&filter=title:${filter}`;
   const url = FLASK_BASE_URL+ urlSuffix;
   console.log(url);
   const response = await fetch(url, {

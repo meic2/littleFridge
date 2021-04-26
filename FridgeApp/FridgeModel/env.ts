@@ -1,7 +1,7 @@
 
 export const AUTO_COMPLETE_GROCERY = 'https://api.spoonacular.com/food/products/suggest';
-export const CLASSIFY_GROCERY_URL = "https://api.spoonacular.com/food/products/classify";
-export const SEARCH_GROCERY_URL = "https://api.spoonacular.com/food/products/search";
+export const GET_RECIPE_INFO = "https://api.spoonacular.com/recipes";
+export const SEARCH_RECIPE_COMPLEX = "https://api.spoonacular.com/recipes/complexSearch";
 export const RECIPE_FIND_BY_INGRE = "https://api.spoonacular.com/recipes/findByIngredients";
 export const BASE_URL_SPOON = "https://api.spoonacular.com";
 export const SPOON_APIKEY = {
