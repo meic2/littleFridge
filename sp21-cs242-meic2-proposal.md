@@ -91,11 +91,10 @@ Week 4:
 ### Week 4
 | Category  | Total Score Allocated | Detailed Rubrics                                                            |
 |-----------|:---------:|-------------------------------------------------------------------------------|
-  Layout Design |  1 |  Complete the design for follower/following screens |
 |  wrap up on previous assignments |  3  |  0: Didn't implement anything <br> 3: Finish the grading based on criteria |
 |  meal plan page |  4  |  0: Didn't implement anything <br> 2: implemented meal memo page and fetch the data according to the query <br> 4: also dynamically filter based on the drop down |
-|  navigate between screens |  5  |  +1 pt: able to navigate between screens  <br> +2 pt: able to go back to the previous page by pressing the back button (from meal search to individual meal page <->  meal page back to the meal planner page)  <br> +1 pt: meal page use the meal will update the state in the fridge state |
-| ESLint | 2 | -2 pts if eslint is not properly set up or there is error reported <br> -1 pt if there is warning reported |
+|  navigate between screens |  5  |  +1 pt: able to navigate between screens  <br> +2 pt: able to go back to the previous page by pressing the back button (from meal search to individual meal page <->  meal page back to the meal planner page)  <br> +2 pt: meal plan's submission will dynamically update in the recipe page |
+| search bar functionality | 3 | +1 pt for each screen being able to search and dynamically change the view accordingly |
 |  Manual test plan |  5  |  0 pt: No manual tests; <br> for every 2 manual test, gain 1 point |
-|  snapshot test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
+|  unit test  |  5  |  0: Didn't implement tests <br> for every 2 manual test, gain 1 point |
 
