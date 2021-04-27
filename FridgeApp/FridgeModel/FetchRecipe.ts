@@ -98,13 +98,14 @@ export async function putRecipe(recipe:Recipe|undefined):Promise<string|undefine
  *
  * @param title
  * @param ingredients
+ * @param image
  * @param createdDate
  * @param _id
  * @param newInstance
  * @param description
  */
 export async function postRecipe(
-  title:string, ingredients:string[]|undefined,
+  title:string, ingredients:string[]|undefined, image:string|undefined,
   createdDate:string, _id:string, newInstance: boolean, description:string|undefined){
   const expireResponse:SpoonFailure = dateFormate(createdDate);
   if (expireResponse.status!== "200"){
@@ -113,6 +114,7 @@ export async function postRecipe(
   const newRecipe:Recipe={
     title:title,
     spoon_id:-1, //indicating this is irrelevant to the spoondatabase
+    image: image,
     ingredients:ingredients,
     createDate:createdDate,
     description:description
@@ -120,6 +122,7 @@ export async function postRecipe(
   if (newInstance===true){
     //make sure that the upcID is set in the new instance
     newRecipe["_id"] = _id;
+    console.log("put new recipe into memo page!");
     return await putRecipe(newRecipe);
   }
   //here we are going to update existing grocery.

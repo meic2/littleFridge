@@ -34,7 +34,6 @@ export default function RecipeScreen(
 ) {
   const [load, setLoad] = useState<boolean>(true);
   const {navigation, route} = props;
-  const [recipe, setRecipe,] = useState<Recipe|undefined>(route.params.recipe);
 
 
   useEffect(()=>{
@@ -45,8 +44,8 @@ export default function RecipeScreen(
     <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
     <RecipeView
       navigation={navigation}
-      recipe={recipe}
-      newInstance={false}/>
+      recipe={route.params.recipe}
+      newInstance={route.params.newInstance}/>
     </View>
   );
 }

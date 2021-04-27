@@ -52,7 +52,7 @@ export function isRecipe(instance: Recipe | undefined|string)
 
 
 
-export function dateFormate(dateinput:string):SpoonFailure{
+export function dateFormate(dateinput:string, createDate=false):SpoonFailure{
   const items:string[]= dateinput.split('-');
   if (items.length!==3){
     return {status:"400", message:"wrong date format"};
@@ -63,7 +63,7 @@ export function dateFormate(dateinput:string):SpoonFailure{
   try {
     const expireDate = new Date(dateinput);
     const today =new Date();
-    if(expireDate < today){
+    if(createDate && expireDate < today){
       return {status:"400", message:"expiration date should not be earlier than today"};
     }
   }catch (e) {

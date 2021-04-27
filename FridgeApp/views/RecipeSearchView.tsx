@@ -44,7 +44,7 @@ export default function RecipeSearchView(
                   button
                   onPress={() => {
                     console.log(`click on ${recipe._id}`);
-                    navigation.navigate('RecipeScreen', { recipe: recipe, newInstance: false});
+                    navigation.navigate('RecipeScreen', { recipe: recipe, newInstance: true});
                   }}
                   key={`i${JSON.stringify(index)}`}
                   bottomDivider
@@ -55,7 +55,7 @@ export default function RecipeSearchView(
                     <ListItem.Title>{recipe.title}</ListItem.Title>
                     {recipe.title ? (
                         <ListItem.Subtitle>
-                          {`created at: ${recipe.createDate}`}
+                          {`Spoonacular Reference: ${recipe.spoon_id}`}
                         </ListItem.Subtitle>
                       )
                       : null}

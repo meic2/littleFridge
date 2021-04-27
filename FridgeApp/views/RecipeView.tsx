@@ -104,19 +104,18 @@ export default function GroceryView(
   };
 
   const updateRecipeDB =async()=>{
-    const postResponse = await postRecipe(title, ingredients,
+    const postResponse = await postRecipe(title, ingredients, recipe?.image,
       createDate, recipeID, newInstance, describe);
     if (isSpoonFailure(postResponse)){
       alert((postResponse as SpoonFailure).message);
     }else{
       alert(postResponse);
-      //TODO: alert should happen after the submit button, not the first time it enters
     }
   };
 
   useEffect(()=>{
     initialGroceryParam();
-    console.log(countTag)
+    console.log(newInstance);
 
   },[]);
 
@@ -207,7 +206,7 @@ export default function GroceryView(
         buttonStyle={{backgroundColor: orangeColor}}
         onPress ={()=>{
           updateRecipeDB();
-          console.log("Submit!");
+          console.log("Submit! is it a new instance?: ", newInstance);
         }}
 
       />
