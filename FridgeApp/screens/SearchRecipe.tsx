@@ -3,11 +3,9 @@ import {Route, StyleSheet} from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import {useEffect} from "react";
-import RecipeView from "../views/RecipeView";
 import {useState} from "react";
 import {Recipe, SpoonRecipeSearch,} from "../types";
 import {fetchRecipeByID} from "../FridgeModel/SpoonHelper";
-import {func} from "prop-types";
 import RecipeSearchView from "../views/RecipeSearchView";
 import LoadingView from "../views/LoadingView";
 
@@ -60,11 +58,10 @@ export default function SearchRecipe(
       setParsedRecipe(parsedRecipes.filter(notEmpty));
     }
 
-    // console.log("In SearchRecipe recipe value:", recipes);
     parsedRecipe();
-    // console.log("In SearchRecipe", parsedRecipes);
+
     setLoad(false);
-  },[]);
+  },[recipes]);
 
   return (
     <View >

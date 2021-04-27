@@ -154,7 +154,7 @@ export async function fetchRecipeByID(recipeID:string): Promise<Recipe|undefined
  * @param sortDirection asc or desc
  * @param maxCalories
  */
-export async function getRecipeComplexSearch(query:string = "", number:number = 5, sort:string = 'random', sortDirection:string = 'asc', maxCalories:number = -1):Promise<SpoonRecipeSearch[]> {
+export async function getRecipeComplexSearch(query:string = "", number:number = 10, sort:string = 'random', sortDirection:string = 'asc', maxCalories:number = -1):Promise<SpoonRecipeSearch[]> {
     let urlSuffix = `?query=${query}&number=${number}&sortDirection=${sortDirection}&sort=${sort}&`;
     if (maxCalories > 0) {
         urlSuffix += `maxCalories=${maxCalories}&`
