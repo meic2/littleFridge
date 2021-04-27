@@ -152,79 +152,58 @@ The overall logic of the App:
 
 
 ### Fridge View
-here you can see that the FridgeListView is has two parts. 
+(I've deleted the irrelevant part of the manualTestplan, mainly scanning part.)
+
+here you can see that the FridgeListView is has two parts. for the search bar, if there is nothing inputted in the search bar, the fridge will show all the grocery items. 
 
 ![alt text](manualTest_ref/FridgeView_beforeScan.png "")
 
-You can click on the search bar and type in the names that you want to search. 
-
-`still implementing...`
-
-If you click onto the scan button, you will see that the page looks like this:
-
-![alt text](manualTest_ref/Scanning.PNG "")
-
-Use the camera to focus on the barcode that you want to scan, 
-(here we use the barcode from the pack of the diet coke as experiment) 
-
-If you scan something (e.g. QR code) that you do not wish to scan,
-then if an alert pop up, you can close the alert window, and tap again to scan again.
-
-![alt text](manualTest_ref/Scann_again.PNG "")
-
-if successful the app will return with an alert:
-
-![alt text](manualTest_ref/Scanned.PNG "")
-
-Then, after click Okay, the navigator will automatically direct the user to the ingredient page. 
-
-
-#### Grocery View
-
-
-There are two part of the scenario: if the barcode cannot be recognized by the external API database, or they can be recorgnized.
-
-1. if it is recognized, the ingredient page will appear with every information of the external API.
-You can edit whatever part of information you like except the upc bar code page, as this will be the fixed key for the database.
-
-![alt text](manualTest_ref/groceryItem_edit.png "")
+ If the user input anything they want to search, for example `diet`, the search bar will automatically search on matched item (Now, the functionally only includes the match on the name of the grocery, but not the expiration date.)
+ 
+ ![alt text](manualTest_ref/grocery_afterSearch.png "")
  
  
-2 . if it is not recognized by the external API (they don't have this item/this barcoe in theire database)
-the ingredient page will appear with empty ingredient page that directs you to input everything. 
-
-![alt text](manualTest_ref/scan_notFound.jpeg "")
-
-after clicking on okay, user should be able to see the individual grocery with input space. 
-
-![alt text](manualTest_ref/scan_notfound_grocery.jpeg "")
-
-
-
-The tag can also flexibally input using `space` to split the tags. 
-
-![alt text](manualTest_ref/grocery_edit_tag.png "")
-
-  
-After hit the submit button, if the server correctly uploads the information, the alert will show up:
-
-![alt text](manualTest_ref/grocery_item_submit_success.png "")
-
-Else, if the date format is input in a wrong way, or the server could not upload the information, the alert will notify the user. 
-
-![alt text](manualTest_ref/grocery_item_submit_fail.png "")
-
-After confirming the submit button, user could edit the page again based on his/her wish, or they could go back to the fridge view. 
-Now they can see that the fridge view is update correctly. 
-
 ### Recipe List
 
 Here is the screenshot for the recipe list view. Here the user can see whatever they've created before. 
 when clicking on the individual item, the app will directs the user to the individual recipe view as well. 
 ![alt text](manualTest_ref/recipe_list.png "")
 
-### Recipe (Individual)
+The same goes for the implementation of the recipe search bar. If the recipe search bar enter the title o the recipe that the user want to search on, the view will dynamically show all the matched recipe. 
+![alt text](manualTest_ref/recipe_after_search.png "")
+  
 
-![alt text](manualTest_ref/recipe_view.png "")
+### Recipe Search
 
-This recipe view is similiar to the grocery view, which will show the created date, the ingredients, the description and the image. 
+This page connects with the external database `spoonacular API`, and will randomly pop up various recipes if nothing entered. 
+
+
+![alt text](manualTest_ref/recipe_search_list.png "")
+
+However, if once the user type in the recipe search bar for this screen, it will search based on the matched recipes. 
+
+![alt text](manualTest_ref/recipe_search_chicken.png "")
+
+When the user limit the maximum number of the recipes they want to see, they can use the slider to limit the maximum number. 
+
+![alt text](manualTest_ref/recipe_search_5_number.png "")
+
+It's also plausible to sort the dropdown menus based on whether the user want to see the recomended recipes based on the healthiness rate given by the spoonacular. 
+Then, click on the switch and the sorting is changed. 
+
+![alt text](manualTest_ref/recipe_search_sort.png "")
+
+If you click on to any one of the recipe, you will see the detailed description showing up. 
+As before, the user is allowed to change all the field to customize their own menu. 
+
+
+![alt text](manualTest_ref/recipe_from_spoon.png "")
+
+And after clicking on submitting (with entering the created_date field), the user now has submit the recipe to their own local database!
+
+![alt text](manualTest_ref/recipe_search_submit.png "")
+
+When the user navigate back to his/her own memo page, they can see that the `Packsitan Chicken` is already in the database, with the created-date listed as description correctly.
+![alt text](manualTest_ref/recipe_after_submit_from_search.png "")
+
+
